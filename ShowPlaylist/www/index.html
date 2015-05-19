@@ -5,6 +5,11 @@
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+        <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script>
+        
         <title>Hello World</title>
         <style type="text/css">
             #player {
@@ -14,11 +19,41 @@
         </style>
     </head>
     <body>
-        <div class="app">
-        </div>
-        <script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
+<div data-role="page" id="foo">
+
+    <div data-role="header" data-position="fixed">
+    <a href="#bar" data-transition="slide" class="ui-btn ui-btn-b ui-icon-user ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
+    <a href="#bar" data-transition="slide" class="ui-btn ui-btn-b ui-icon-back ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a>
+        <h1>BATTLETRACK</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <p>I'm first in the source order so I'm shown as the page.</p>
+        <p>View internal page called <a href="#bar">bar</a></p>
+    </div><!-- /content -->
+
+    <div data-role="footer" data-position="fixed">
+        <h4>Page Footer</h4>
+    </div><!-- /footer -->
+</div><!-- /page -->
+
+<!-- Start of second page -->
+<div data-role="page" id="bar">
+
+    <div data-role="header" data-position="fixed">
+        <h1>BATTLETRACK</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <p>I'm the second in the source order so I'm hidden when the page loads. I'm just shown if a link that references my id is beeing clicked.</p>
+        <p><a data-rel="back">Back to foo</a></p>
+    </div><!-- /content -->
+
+    <div data-role="footer" data-position="fixed">
+        <h4>Page Footer</h4>
+    </div><!-- /footer -->
+</div><!-- /page -->
         <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>
