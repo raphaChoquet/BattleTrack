@@ -39,10 +39,15 @@ app.onDeviceReady = function () {
 };
 
 app.displayPlaylists = function (playlists) {
-    $.getJSON(api + "playlist/" + playlists[0].playlist_id)
-        .done(function (trackList) {
-            app.getRandTrack(trackList.tracks.data);
-        });
+    $.ajax({
+        url: api + "playlist/" + playlists[0].playlist_id,
+        type: 'GET',
+        dataType: 'json'
+    }).done(function playlistCallback(trackList) {
+          console.log(trackList);
+        //app.getRandTrack(trackList.tracks.data);
+    });
+
 };
 
 
