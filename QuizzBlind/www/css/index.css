@@ -3,6 +3,7 @@ body {
     color : white;
     text-align : center;
 }
+
 #tchat {
     background-color : white;
     opacity : 0.8;
@@ -19,6 +20,18 @@ body {
     color : rgb(40,40,40);
 }
 
+/*_____________THEME GENERAL
+_______________________________________*/
+.ui-page-theme-a header.ui-bar-inherit
+ {
+    background-color:#f3EDD3;
+    padding:10px 0;
+    border:none;
+}
+main.ui-content {
+    width:80%;
+    margin:0 auto;
+}
 #gameStart img {
     width:50%;
     max-width:300px;

@@ -10,53 +10,53 @@
     </head>
     <body>
 
-     <div data-role="page" id="connect">
-            <div data-role="header" data-position="fixed">
+        <div data-role="page" id="connect">
+            <header data-role="header" data-position="fixed">
                 <a href="#bar" data-transition="slide" class="ui-btn ui-btn-b ui-icon-user ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
                 
                 <h1>BATTLETRACK</h1>
-            </div><!-- /header -->
+            </header><!-- /header -->
 
-            <div role="main" class="ui-content">
-                <a href="#lobby" data-transition="fade" class="ui-btn ui-icon-connect ui-btn-icon-left">Connection</a>
+            <main role="main" class="ui-content">
+                <a href="#lobby" data-transition="fade" class="ui-btn ui-icon-lock ui-btn-icon-left">Connection</a>
 
-            </div>
+            </main>
         </div>
 
 
         <div data-role="page" id="lobby">
-            <div data-role="header" data-position="fixed">
+            <header data-role="header" data-position="fixed">
                 <a href="#bar" data-transition="slide" class="ui-btn ui-btn-b ui-icon-user ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
                 <a href="#connect" data-direction="reverse" data-transition="slide" class="ui-btn ui-btn-b ui-icon-back ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a>
                 <h1>BATTLETRACK</h1>
-            </div><!-- /header -->
+            </header><!-- /header -->
 
-            <div role="main" class="ui-content">
+            <main role="main" class="ui-content">
                 <a href="#themeSelection" data-transition="fade" onclick="app.play()" class="ui-btn ui-icon-play ui-btn-icon-left">Jouer</a>
                 <h1>Tchat avec Socket.IO</h1>
 
-            </div>
+            </main>
         </div>
 
         <div data-role="page" id="themeSelection">
-            <div data-role="header" data-position="fixed">
+            <header data-role="header" data-position="fixed">
                <a href="#b" data-transition="slide" class="ui-btn ui-btn-b ui-icon-user ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
                 <a href="#lobby" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-b ui-icon-back ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a>
                 <h1>BATTLETRACK</h1>
-            </div><!-- /header -->
+            </header><!-- /header -->
 
-            <div role="main" class="ui-content" id="list-genre">
-            </div>
+            <main role="main" class="ui-content" id="list-genre">
+            </main>
         </div>
 
         <div data-role="page" id="gameStart">
-            <div data-role="header" data-position="fixed">
+            <header data-role="header" data-position="fixed">
                <a href="#b" data-transition="slide" class="ui-btn ui-btn-b ui-icon-user ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
-                <a href="#themeSelection" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-b ui-icon-back ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a>
+                <a href="#lobby" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-b ui-icon-back ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a>
                 <h1>BATTLETRACK</h1>
-            </div><!-- /header -->
+            </header><!-- /header -->
 
-            <div role="main" class="ui-content">
+            <main role="main" class="ui-content">
                 <h2>NOM DE LA CATEGORIE</h2>
                 <img src="img/logo.svg">
                 <div class="progressBarContainer">
@@ -68,7 +68,7 @@
                 <a href="#" data-transition="fade" onclick="" class="ui-btn ui-icon-play ui-btn-icon-left">Black Sabath - Fuck</a>
                 <a href="#" data-transition="fade" onclick="" class="ui-btn ui-icon-play ui-btn-icon-left">Black Sabath - Fuck</a>
                
-            </div>
+            </main>
         </div>
 
         <script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
