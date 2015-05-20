@@ -219,7 +219,7 @@ var genreManager = {
         var $btn = $('<a>', {
             href: '#gameStart',
             dataTransition: 'fade',
-            class: 'ui-btn ui-icon-play ui-btn-icon-left ui-btn-genre',
+            class: 'ui-btn ui-btn-genre',
             text: genre.name
         });
 
@@ -288,7 +288,9 @@ var questionManager = {
             html: proposition.name
         });
 
-        $btn.click(function () {
+        $btn.click(function (evt) {
+            evt.preventDefault();
+            evt.stopPropagation();
             if (proposition.isResponse) {
                 self.win($btn);
             } else {
@@ -305,18 +307,35 @@ var questionManager = {
     win: function ($btn) {
         var self = this;
 
+        $btn.addClass('winning-btn');
+        $('#propositions a').not(self.$btnResponse).addClass('losing-btn');
 
-        window.setTimeout(function () {
+        document.addEventListener('click', overWinClick, false);
+
+        function overWinClick(evt) {
+            
+            evt.preventDefault();
+            evt.stopPropagation();
+            document.removeEventListener('click', overWinClick, false);
             self.next(true);
-        }, 100);
+        }
+
     },
     lose: function ($btn) {
         var self = this;
+        $btn.addClass('picked-loser-btn');
+        $('#propositions a').not(self.$btnResponse).addClass('losing-btn');
+        $(self.$btnResponse).addClass('winning-btn');
 
+        document.addEventListener('click', overLoseClick, false);
 
-        window.setTimeout(function () {
+        function overLoseClick(evt) {
+            
+            evt.preventDefault();
+            evt.stopPropagation();
+            document.removeEventListener('click', overLoseClick,false);
             self.next(false);
-        }, 100);
+        }
     },
     next: function (haveWin) {
         this.trackPlayer.pause();
