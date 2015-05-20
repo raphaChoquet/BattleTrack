@@ -1,69 +1,95 @@
-
-var api = "https://api.deezer.com/";
 var app = {
-    alreadyPlayedTracks: [],
-    play: function () {
+    api: "https://api.deezer.com/",
+    me: {},
+    currentGame: null,
+    genres: null,
+    init: function () {
         var self = this;
 
-        $.getJSON('playlists.json', function (playlists) {
-            self.playlists = playlists;
-            app.displayGenre(playlists);
+        $.getJSON('genres.json', function (genres) {
+            self.genres = genres;
+        });
+
+        this.bindEvent();
+    },
+    bindEvent: function () {
+        var self = this;
+        $('#connect').click(function () {
+            self.connect();
+        });
+
+        $('#btnPlay').click(function () {
+            self.currentGame = game;
+            self.currentGame.start();
         });
     },
-
-    displayGenre: function (playlists) {
-        var genres = this.pick3Genre(playlists);
-        var list = '';
-        $('#list-genre').empty();
-        for (var i = 0; i < genres.length; ++i) {
-            $('#list-genre').append('<a href="#gameStart" data-transition="fade" class="ui-btn ui-icon-play ui-btn-icon-left ui-btn-genre" onclick="app.launchSet(' + genres[i].id + ')">' + genres[i].genre + '</a>');
+    connect: function () {
+        this.me = {
+            username: prompt('Username :')
         }
+        $('#user').html('Bienvenue ' + this.me.username);
     },
-
-    pick3Genre: function (playlists) {
-        var genres = [];
-        while (genres.length < 3 & genres.length < playlists.length) {
-            var genreRand = this.getRandomGenre(playlists);
-            if (!genres.objectInArray(genreRand, 'genre')) {
-                genres.push(genreRand);
-            }
-        }
-        return genres;
-    },
-
-    getRandomGenre: function (playlists) {
-        return playlists[Math.floor(Math.random() * playlists.length)];
-    },
-
-    launchSet: function (id) {
-        var self = this;
-        var genre = this.playlists.findObject('id', id);
+    retrievePlaylist: function (resolve, reject, id) {
         $.ajax({
-            url: api + "playlist/" + genre.playlist_id,
+            url: this.api + "playlist/" + id,
             type: 'GET',
             dataType: 'json'
-        }).done(function playlistCallback(trackList) {
-            var set = {
-                genre: genre.genre,
-                questions: self.createSet(trackList.tracks.data)
-            };
+        }).done(function (tracksList) {
+           resolve(tracksList);
+        }).fail(function (jqXHR, textStatus) {
+            alert(textStatus);
+        });
+    }
+};
 
-            self.displayQuestion(set);
+var game = {
+    sets: [],
+    currentSet: null,
+    alreadyPlayedTracks: [],
+    start: function () {
+        var self = this;
+        var choiceGenre = new Promise(function (resolve, reject) {
+            genreManager.init(resolve, reject)
+        });
+        choiceGenre.then(function (genre) {
+            self.launchSet(genre);
         });
     },
 
-    createSet: function (trackList) {
+    launchSet: function (genre) {
+        var self = this;
+        var retrievedTracks = new Promise(function (resolve, reject) {
+            app.retrievePlaylist(resolve, reject, genre.playlist_id);
+        });
+
+        retrievedTracks.then(function (tracksList) {
+            var set = {
+                genre: genre.name,
+                questions: self.createSet(tracksList.tracks.data),
+                result: {
+                    me: {},
+                    opposante: {}
+                }
+            };
+            self.sets.push(set);
+            self.currentSet = set;
+            $('#title-genre').html(set.genre);
+            self.showQuestionsPage(set, 0);
+        });
+    },
+
+    createSet: function (tracks) {
         var questions = [];
-        while (questions.length < 3 & questions.length < trackList.length) {
-            var question = this.createQuestion(trackList);
+        while (questions.length < 3 & questions.length < tracks.length) {
+            var question = this.createQuestion(tracks);
             questions.push(question);
         }
         return questions;
     },
 
-    createQuestion: function (trackList) {
-        var response = this.createResponse(trackList);
-        var propositions = this.createProposition(response.info, trackList);
+    createQuestion: function (tracks) {
+        var response = this.createResponse(tracks);
+        var propositions = this.createProposition(response.info, tracks);
 
         return {
             preview: response.preview,
@@ -72,7 +98,6 @@ var app = {
     },
 
     createResponse: function (trackList) {
-        
         var isNoPlayed = false;
         while (!isNoPlayed) {
             var trackRand = this.getRandomTrack(trackList);
@@ -92,11 +117,11 @@ var app = {
         return response;
     },
 
-    createProposition: function (response, trackList) {
+    createProposition: function (response, tracks) {
         var propositions = [response];
 
         while (propositions.length < 4) {
-            var trackRand = this.getRandomTrack(trackList);
+            var trackRand = this.getRandomTrack(tracks);
             if (!propositions.objectInArray(trackRand, 'id')) {
                 propositions.push({
                     id: trackRand.id,
@@ -108,32 +133,78 @@ var app = {
         return propositions;
     },
 
-    getRandomTrack: function (trackList) {
-        var idTrack = Math.floor(Math.random() * trackList.length);
-        return trackList[idTrack];  
+    getRandomTrack: function (tracks) {
+        var idTrack = Math.floor(Math.random() * tracks.length);
+        return tracks[idTrack];  
     },
 
-    displayQuestion: function (set) {
-        $('#title-genre').html(set.genre);
-        questionManager.init(set.questions[0]);
+    showQuestionsPage: function (set, page) {
+        var self = this;
+        var waitResponse = new Promise(function (resolve, reject) {
+            questionManager.init(resolve, set.questions[page]);
+        });
 
-        // for (var i = 0; i < propositions.length; i++) {
-        //     questionManager.createBtnProposition(propositions[i]);
-        //     $('#propositions').append('<a href="#" data-transition="fade" onclick="app.isCorrectResponse(this, ' + propositions[i].isResponse + ')" class="ui-btn ui-icon-play ui-btn-icon-left ui-btn-proposition">' + propositions[i].name + '</a>');
-        // }
-        
-        // var trackPlayer = new Audio(question.preview);
-        // trackPlayer.play();
-        // var $progressBarProgression = $('.progressBarProgression');
-        // trackPlayer.addEventListener('timeupdate', function () {
-        //     var percent = (trackPlayer.currentTime * 100 / trackPlayer.duration);
-        //     $progressBarProgression.css('width', percent + '%');
-        //     if (percent === 100) {
-        //         alert('Perdu !!!');
-        //     }
-        // });
+        waitResponse.then(function (haveWin) {
+            set.result.me['question-' + page] = haveWin;
+            page++;
+            if (page < 3) {
+                self.showQuestionsPage(set, page);
+            } else {
+                alert(JSON.stringify(set.result.me));
+            }
+        });
     }
+};
 
+
+var genreManager = {
+    resolve: null,
+    genres: null,
+    init: function (resolve, reject) {
+        this.resolve = resolve;
+        this.genres = app.genres;
+        this.displayGenres();
+    },
+
+    displayGenres: function () {
+        var genresSelected = this.pick3Genres(this.genres);
+        var list = '';
+        $('#list-genre').empty();
+        for (var i = 0; i < genresSelected.length; ++i) {
+            this.createBtnGenre(genresSelected[i]);
+        }
+    },
+
+    createBtnGenre: function (genre) {
+        var self = this;
+        var $btn = $('<a>', {
+            href: '#gameStart',
+            dataTransition: 'fade',
+            class: 'ui-btn ui-icon-play ui-btn-icon-left ui-btn-genre',
+            text: genre.name
+        });
+
+        $btn.appendTo($('#list-genre'));
+
+        $btn.click(function () {
+            self.resolve(genre);
+        });
+    },
+
+    pick3Genres: function (genres) {
+        var genresPicked= [];
+        while (genresPicked.length < 3 & genresPicked.length < genres.length) {
+            var genreRand = this.getRandomGenre(genres);
+            if (!genresPicked.objectInArray(genreRand, 'id')) {
+                genresPicked.push(genreRand);
+            }
+        }
+        return genresPicked;
+    },
+
+    getRandomGenre: function (genres) {
+        return genres[Math.floor(Math.random() * genres.length)];
+    }
 };
 
 
@@ -141,18 +212,21 @@ var questionManager = {
     question: null,
     $btnResponse: null,
     trackPlayer: null,
-    init: function (question) {
+    init: function (resolve, question) {
+        this.resolve = resolve;
         this.question = question;
         this.displayProposition(question.proposition);
         this.createPlayer(question.preview);
     },
     displayProposition: function () {
         var propositions = this.question.propositions.shuffle();
+        $('#propositions').empty();
         for (var i = 0; i < propositions.length; i++) {
             this.createBtnProposition(propositions[i]);
         }
     },
     createPlayer: function (preview) {
+        var self = this;
         var trackPlayer = new Audio(preview);
         trackPlayer.play();
         var $progressBarProgression = $('.progressBarProgression');
@@ -160,7 +234,7 @@ var questionManager = {
             var percent = (trackPlayer.currentTime * 100 / trackPlayer.duration);
             $progressBarProgression.css('width', percent + '%');
             if (percent === 100) {
-                alert('Perdu !!!');
+                self.lose();            
             }
         });
 
@@ -177,9 +251,9 @@ var questionManager = {
 
         $btn.click(function () {
             if (proposition.isResponse) {
-                self.animeWin($btn);
+                self.win($btn);
             } else {
-                self.animeLoose($btn);
+                self.lose($btn);
             }
         });
 
@@ -189,13 +263,35 @@ var questionManager = {
             this.$btnResponse = $btn;
         }
     },
-    animeWin: function ($btn) {
+    win: function ($btn) {
+        var self = this;
 
+
+        window.setTimeout(function () {
+            self.next(true);
+        }, 100);
     },
-    animeLoose: function ($btn) {
+    lose: function ($btn) {
+        var self = this;
 
+
+        window.setTimeout(function () {
+            self.next(false);
+        }, 100);
+    },
+    next: function (haveWin) {
+        this.trackPlayer.pause();
+        delete this.trackPlayer;
+        this.resolve(haveWin);
     }
 }
+
+
+app.init();
+
+
+
+// 
 
 
 Array.prototype.objectInArray = function (object, comparator) {

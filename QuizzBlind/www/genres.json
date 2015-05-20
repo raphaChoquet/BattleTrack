@@ -1,17 +1,17 @@
 [
 	{
 		"id": 1,
-		"genre": "Pop Rock",
+		"name": "Pop Rock",
 		"playlist_id": 908622995
 	},
 	{	
 		"id": 2,
-		"genre": "Electro",
+		"name": "Electro",
 		"playlist_id": 781155095
 	},
 	{
 		"id": 3,
-		"genre": "Jazz",
+		"name": "Jazz",
 		"playlist_id": 1082641841
 	}
 ]
