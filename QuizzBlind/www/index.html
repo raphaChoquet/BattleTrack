@@ -32,7 +32,7 @@
             </div><!-- /header -->
 
             <div role="main" class="ui-content">
-                <a href="#themeSelection" data-transition="fade" class="ui-btn ui-icon-play ui-btn-icon-left">Jouer</a>
+                <a href="#themeSelection" data-transition="fade" onclick="app.play()" class="ui-btn ui-icon-play ui-btn-icon-left">Jouer</a>
                 <h1>Tchat avec Socket.IO</h1>
 
             </div>
@@ -45,11 +45,7 @@
                 <h1>BATTLETRACK</h1>
             </div><!-- /header -->
 
-            <div role="main" class="ui-content">
-                <a href="#gameStart" data-transition="fade" onclick="play()" class="ui-btn ui-icon-play ui-btn-icon-left">Metal</a>
-                <a href="#gameStart" data-transition="fade" onclick="play()" class="ui-btn ui-icon-play ui-btn-icon-left">Rap</a>
-                <a href="#gameStart" data-transition="fade" onclick="play()" class="ui-btn ui-icon-play ui-btn-icon-left">Rock</a>
-                <a href="#gameStart" data-transition="fade" onclick="play()" class="ui-btn ui-icon-play ui-btn-icon-left">Funk</a>
+            <div role="main" class="ui-content" id="list-genre">
             </div>
         </div>
 
@@ -61,8 +57,7 @@
             </div><!-- /header -->
 
             <div role="main" class="ui-content">
-                <div id="tchat">
-                </div>
+                
             </div>
         </div>
 

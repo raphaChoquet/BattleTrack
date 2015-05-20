@@ -1,0 +1,27 @@
+[
+	{
+		"id": 1,
+		"genre": "Pop Rock",
+		"playlist_id": 908622995
+	},
+	{	
+		"id": 2,
+		"genre": "Electro",
+		"playlist_id": 781155095
+	},
+	{
+		"id": 3,
+		"genre": "Jazz",
+		"playlist_id": 1082641841
+	},
+	{
+		"id": 4,
+		"genre": "Rap",
+		"playlist_id": 1082641841
+	},
+	{
+		"id": 5,
+		"genre": "Funk",
+		"playlist_id": 1082641841
+	}
+]

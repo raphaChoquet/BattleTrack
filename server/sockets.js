@@ -6,7 +6,7 @@ function sockets(server) {
 
 	var io = require('socket.io').listen(server);
 	io.sockets.on('connection', function (socket) {
-
+		console.log('test');
 		if (lastGameIDCreated !== null) {
 			var gameID = joinGame();
 		} else {

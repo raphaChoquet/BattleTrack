@@ -1,64 +1,92 @@
 
-function play() {
-    app.play();
-}
-
 var api = "https://api.deezer.com/";
-var socket;
-var roomID;
 var app = {
-
-    init: function () {
-        socket = io();
-
-        socket.on('retrievedRoomID', function (id) {
-            roomID = id;
-            socket.on('sendedQuizz', function (quizz) {
-                alert('retrieve quizz');
-                console.log('retrieve', quizz);
-            });
-        });
-    }, 
-
+    alreadyPlayedTracks: [],
     play: function () {
         var self = this;
-        $.ajax({
-            url: api + "playlist/908622995",
-            type: 'GET',
-            dataType: 'json'
-        }).done(function playlistCallback(trackList) {
-            var quizz = self.createQuizz(trackList.tracks.data);
-            var game =  {
-                quizz: quizz,
-                id: roomID
-            };
-            console.log(game);
-            socket.emit('sendQuizz', game);
+
+        $.getJSON('playlists.json', function (playlists) {
+            self.playlists = playlists;
+            app.displayGenre(playlists);
         });
     },
 
-    createQuizz: function (trackList) {
-        var question1 = this.createQuestion(trackList);
-        var question2 = this.createQuestion(trackList);
-        var question3 = this.createQuestion(trackList);
-        return [question1, question2, question3];
+    displayGenre: function (playlists) {
+        var genres = this.pick3Genre(playlists);
+        var list = '';
+        $('#list-genre').empty();
+        for (var i = 0; i < genres.length; ++i) {
+            $('#list-genre').append('<a href="#gameStart" data-transition="fade" class="ui-btn ui-icon-play ui-btn-icon-left" onclick="app.launchSet(' + genres[i].id + ')">' + genres[i].genre + '</a>');
+        }
+    },
+
+    pick3Genre: function (playlists) {
+        var genres = [];
+        while (genres.length < 3 & genres.length < playlists.length) {
+            var genreRand = this.getRandomGenre(playlists);
+            if (!genres.objectInArray(genreRand, 'genre')) {
+                genres.push(genreRand);
+            }
+        }
+        return genres;
+    },
+
+    getRandomGenre: function (playlists) {
+        return playlists[Math.floor(Math.random() * playlists.length)];
+    },
+
+    launchSet: function (id) {
+        var self = this;
+        var genre = this.playlists.findObject('id', id);
+        $.ajax({
+            url: api + "playlist/" + genre.playlist_id,
+            type: 'GET',
+            dataType: 'json'
+        }).done(function playlistCallback(trackList) {
+            var set = {
+                genre: genre.genre,
+                questions: self.createSet(trackList.tracks.data)
+            };
+
+            self.displayQuestion(set.questions[0]);
+        });
+    },
+
+    createSet: function (trackList) {
+        var questions = [];
+        while (questions.length < 3 & questions.length < trackList.length) {
+            var question = this.createQuestion(trackList);
+            questions.push(question);
+        }
+        return questions;
     },
 
     createQuestion: function (trackList) {
         var response = this.createResponse(trackList);
-        var propositions = this.createProposition(response, trackList);
+        var propositions = this.createProposition(response.info, trackList);
 
         return {
-            response: response,
+            preview: response.preview,
             propositions: propositions
         }
     },
 
     createResponse: function (trackList) {
-        var trackRand = this.randomTrack(trackList);
+        
+        var isNoPlayed = false;
+        while (!isNoPlayed) {
+            var trackRand = this.getRandomTrack(trackList);
+            if ($.inArray(trackRand.preview, this.alreadyPlayedTracks) === -1) {
+                isNoPlayed = true;
+            }
+        }        
+        this.alreadyPlayedTracks.push(trackRand.preview);
         var response = {
-            id: trackRand.id,
-            name: trackRand.title,
+            info: {
+                id: trackRand.id,
+                name: trackRand.title,
+                isResponse: true
+            },
             preview: trackRand.preview
         };
         return response;
@@ -68,33 +96,69 @@ var app = {
         var propositions = [response];
 
         while (propositions.length < 4) {
-            var trackRand = this.randomTrack(trackList);
-            if (!this.trackInArray(trackRand, propositions)) {
+            var trackRand = this.getRandomTrack(trackList);
+            if (!propositions.objectInArray(trackRand, 'id')) {
                 propositions.push({
                     id: trackRand.id,
-                    name: trackRand.title
+                    name: trackRand.title,
+                    isResponse: false
                 });
             }
         }
         return propositions;
     },
 
-    randomTrack: function (trackList) {
+    getRandomTrack: function (trackList) {
         var idTrack = Math.floor(Math.random() * trackList.length);
         return trackList[idTrack];
     },
 
-    trackInArray: function (track, list) {
-        var find = false;
-        var i = 0;
-        while (!find && i < list.length) {
-            if (track.id === list[i].id) {
-                find = true;
-            }
-            i++;
-        }
-        return find;
+    displayQuestion: function (question) {
+        
     }
 };
 
-app.init();
+
+Array.prototype.objectInArray = function (object, comparator) {
+    var find = false;
+    var i = 0;
+    while (!find && i < this.length) {
+        if (object[comparator] === this[i][comparator]) {
+            find = true;
+        }
+        i++;
+    }
+    return find;
+}
+
+Array.prototype.findObject = function (key, value) {
+    var objectFind;
+    var find = false;
+    var i = 0;
+    while (!find && i < this.length) {
+        if (this[i][key] === value) {
+            find = true;
+            objectFind = this[i];
+        }
+        i++;
+    }
+    return objectFind;
+}
+
+Array.prototype.shuffle = function () {
+    var array = this;
+    var currentIndex = array.length;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+        // Pick a remaining element...
+        var randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        var temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+    return array;
+}
