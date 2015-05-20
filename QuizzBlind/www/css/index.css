@@ -1,7 +1,8 @@
 body {
-    background-color : rgb(50,50,80);
+    background-color : white;
     color : white;
     text-align : center;
+    font-family: 'Signika', sans-serif;
 }
 
 #tchat {
@@ -28,13 +29,27 @@ _______________________________________*/
     padding:10px 0;
     border:none;
 }
+.ui-page-theme-a main .ui-btn {
+  padding: 20px;
+  border-radius: 3px;
+  margin: 25px 0;
+    text-shadow: none;
+      border: none;
+      font-family: 'Signika', sans-serif;
+}
+.ui-page-theme-a .ui-btn.ui-btn-proposition {
+  background-color: #20D6C7;
+  /*font-family: 'Signika', sans-serif;*/
+  color: white;
+}
+
 main.ui-content {
     width:80%;
     margin:0 auto;
 }
-#gameStart img {
+.playImage {
     width:50%;
-    max-width:300px;
+    max-width:200px;
 }
 
 .progressBarContainer {

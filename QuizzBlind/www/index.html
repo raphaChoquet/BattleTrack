@@ -2,8 +2,10 @@
 <html>
     <head>
         <meta name="format-detection" content="telephone=no">
+        <meta charset="UTF-8">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link href='http://fonts.googleapis.com/css?family=Signika' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
         <link rel="stylesheet" type="text/css" href="css/index.css">
         <title>Hello World</title>
@@ -12,13 +14,13 @@
 
         <div data-role="page" id="connect">
             <header data-role="header" data-position="fixed">
-                <a href="#bar" data-transition="slide" class="ui-btn ui-btn-b ui-icon-user ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
+                <a href="#bar" data-transition="slide" class="ui-btn ui-btn-b ui-icon-gear ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
                 
                 <h1>BATTLETRACK</h1>
             </header><!-- /header -->
 
             <main role="main" class="ui-content">
-                <a href="#lobby" data-transition="fade" class="ui-btn ui-icon-lock ui-btn-icon-left">Connection</a>
+                <a href="#lobby" data-transition="fade" class="ui-btn ui-icon-lock ui-btn-icon-left">Connexion</a>
 
             </main>
         </div>
@@ -26,7 +28,7 @@
 
         <div data-role="page" id="lobby">
             <header data-role="header" data-position="fixed">
-                <a href="#bar" data-transition="slide" class="ui-btn ui-btn-b ui-icon-user ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
+                <a href="#bar" data-transition="slide" class="ui-btn ui-btn-b ui-icon-gear ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
                 <a href="#connect" data-direction="reverse" data-transition="slide" class="ui-btn ui-btn-b ui-icon-back ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a>
                 <h1>BATTLETRACK</h1>
             </header><!-- /header -->
@@ -40,25 +42,28 @@
 
         <div data-role="page" id="themeSelection">
             <header data-role="header" data-position="fixed">
-               <a href="#b" data-transition="slide" class="ui-btn ui-btn-b ui-icon-user ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
+               <a href="#b" data-transition="slide" class="ui-btn ui-btn-b ui-icon-gear ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
                 <a href="#lobby" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-b ui-icon-back ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a>
                 <h1>BATTLETRACK</h1>
             </header><!-- /header -->
 
-            <main role="main" class="ui-content" id="list-genre">
+            <main role="main" class="ui-content" >
+            <img src="img/logo.svg" class="playImage">
+            <h2> Choisis ton thème !</h2>
+            <div id="list-genre">
+            </div>
             </main>
         </div>
 
         <div data-role="page" id="gameStart">
             <header data-role="header" data-position="fixed">
-               <a href="#b" data-transition="slide" class="ui-btn ui-btn-b ui-icon-user ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
-                <a href="#lobby" data-transition="slide" data-direction="reverse" class="ui-btn ui-btn-b ui-icon-back ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a>
+               
                 <h1>BATTLETRACK</h1>
             </header><!-- /header -->
 
             <main role="main" class="ui-content">
                 <h2 id="title-genre">NOM DE LA CATEGORIE</h2>
-                <img src="img/logo.svg">
+                <img src="img/logo.svg" class="playImage">
                 <div class="progressBarContainer">
                     <div class="progressBarProgression" style="width:0%;"></div>
                 </div>
