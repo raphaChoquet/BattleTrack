@@ -18,3 +18,20 @@ body {
     text-align:left;
     color : rgb(40,40,40);
 }
+
+#gameStart img {
+    width:50%;
+    max-width:300px;
+}
+
+.progressBarContainer {
+    width:100%;
+    height:10px;
+    background:#113F59;
+}
+
+.progressBarProgression {
+    width:54%;
+    height:10px;
+    background:#d54F58;
+}
