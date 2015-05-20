@@ -1,67 +1,55 @@
 
 var gameInProgress = {};
-var lastIDGameCreate = null;
+var lastGameIDCreated = null;
 
 function sockets(server) {
 
 	var io = require('socket.io').listen(server);
-
 	io.sockets.on('connection', function (socket) {
-		console.log('connection');
 
-		if (lastIDGameCreate !== null) {
-			var game = joinGame()
+		if (lastGameIDCreated !== null) {
+			var gameID = joinGame();
 		} else {
-			var game = createGame();
+			var gameID = createGame();
 		}
 
+		socket.join('Room:' + gameID);
 
+		socket.emit('retrievedRoomID', gameID);
 
-		socket.emit('sendedRoomID', game);
-
-		function createGame(clientID) {
-			var uniqID = createUniqIDGame();
-			var game = uniqID;
-
-			gameInProgress[uniqID] = game;
-			lastIDGameCreate = uniqID;
-
-			createRoom(game);
-
-			return gameInProgress[uniqID];
-		}
-
-		function joinGame(clientID) {
-			var game = gameInProgress[lastIDGameCreate];
-			lastIDGameCreate = null;
-			createRoom(game);
-			return game;
-		}
-
-
-		function createUniqIDGame() {
-			var noUniq = true;
-			while (noUniq) {
-				var uniqID = Math.round((new Date()).getTime() * Math.random());
-
-				if (typeof gameInProgress[uniqID] === 'undefined') {
-					noUniq = false;
-				}
-			}
-			return uniqID;
-		}
-
-		function createRoom(game) {
-			console.log('Room', game);
-			
-			socket.on('sendQuizz-' + game, function (quizz) {
-				console.log('received');
-				socket.broadcast.emit('retrievedQuizz-' + game, quizz);
-			});
-		}
+		socket.on('sendQuizz', function (game) {
+			socket.to('Room:' + game.id).broadcast.emit('sendedQuizz', game);
+		});
 
 	});
+	
+	function createGame(clientID) {
+		var uniqID = createUniqIDGame();
+		var gameID = uniqID;
 
+		gameInProgress[uniqID] = gameID;
+		lastGameIDCreated = uniqID;
 
+		return gameInProgress[uniqID];
+	}
+
+	function joinGame(clientID) {
+		var gameID = gameInProgress[lastGameIDCreated];
+		lastGameIDCreated = null;
+		return gameID;
+	}
+
+	function createUniqIDGame() {
+		var noUniq = true;
+		while (noUniq) {
+			var uniqID = Math.round((new Date()).getTime() * Math.random());
+
+			if (typeof gameInProgress[uniqID] === 'undefined') {
+				noUniq = false;
+			}
+		}
+		return uniqID;
+	}
 }
+
 exports.sockets = sockets;

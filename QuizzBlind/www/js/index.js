@@ -11,15 +11,13 @@ var app = {
     init: function () {
         socket = io();
 
-        socket.on('sendedRoomID', function (id) {
+        socket.on('retrievedRoomID', function (id) {
             roomID = id;
-            socket.on('retrievedQuizz-' + roomID, function (quizz) {
+            socket.on('sendedQuizz', function (quizz) {
                 alert('retrieve quizz');
                 console.log('retrieve', quizz);
             });
         });
-
-       
     }, 
 
     play: function () {
@@ -30,8 +28,12 @@ var app = {
             dataType: 'json'
         }).done(function playlistCallback(trackList) {
             var quizz = self.createQuizz(trackList.tracks.data);
-            console.log('quizz', quizz);
-            socket.emit('sendQuizz-' + roomID, quizz);
+            var game =  {
+                quizz: quizz,
+                id: roomID
+            };
+            console.log(game);
+            socket.emit('sendQuizz', game);
         });
     },
 
@@ -51,6 +53,7 @@ var app = {
             propositions: propositions
         }
     },
+
     createResponse: function (trackList) {
         var trackRand = this.randomTrack(trackList);
         var response = {
@@ -60,6 +63,7 @@ var app = {
         };
         return response;
     },
+
     createProposition: function (response, trackList) {
         var propositions = [response];
 
@@ -74,10 +78,12 @@ var app = {
         }
         return propositions;
     },
+
     randomTrack: function (trackList) {
         var idTrack = Math.floor(Math.random() * trackList.length);
         return trackList[idTrack];
     },
+
     trackInArray: function (track, list) {
         var find = false;
         var i = 0;
@@ -89,7 +95,6 @@ var app = {
         }
         return find;
     }
-
 };
 
 app.init();
