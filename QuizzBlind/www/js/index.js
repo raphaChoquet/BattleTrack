@@ -51,7 +51,7 @@ var app = {
             if (gameRoom.users.length <= 1) {
                 self.currentGame = game;
                 self.currentGame.start('create', gameRoom);
-            } else if() {
+            } else {
                 self.currentGame.start('wait', gameRoom);
             }
         });
