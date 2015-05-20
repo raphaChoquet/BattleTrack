@@ -6,37 +6,40 @@ function sockets(server) {
 
 	var io = require('socket.io').listen(server);
 	io.sockets.on('connection', function (socket) {
-		console.log('test');
-		if (lastGameIDCreated !== null) {
-			var gameID = joinGame();
-		} else {
-			var gameID = createGame();
-		}
+		console.log('User connected');
 
-		socket.join('Room:' + gameID);
 
-		socket.emit('retrievedRoomID', gameID);
+		socket.on('joinRoom', function (user) {
+			if (lastGameIDCreated !== null) {
+				var game = joinGame(user);
+			} else {
+			 	var game = createGame(user);
+			}
 
-		socket.on('sendQuizz', function (game) {
-			socket.to('Room:' + game.id).broadcast.emit('sendedQuizz', game);
+			socket.join('Room:' + game.id);
+			io.sockets.to('Room:' + game.id).emit('joinedRoom', game);
 		});
-
 	});
 	
-	function createGame(clientID) {
+	function createGame(user) {
 		var uniqID = createUniqIDGame();
-		var gameID = uniqID;
 
-		gameInProgress[uniqID] = gameID;
+		gameInProgress[uniqID] = {
+			id: uniqID,
+			users: [user]
+		};
 		lastGameIDCreated = uniqID;
 
 		return gameInProgress[uniqID];
 	}
 
-	function joinGame(clientID) {
-		var gameID = gameInProgress[lastGameIDCreated];
-		lastGameIDCreated = null;
-		return gameID;
+	function joinGame(user) {
+		var game = gameInProgress[lastGameIDCreated];
+		game.users.push(user);
+		if (game.users.length >= 2) {
+			lastGameIDCreated = null;
+		}
+		return game;
 	}
 
 	function createUniqIDGame() {

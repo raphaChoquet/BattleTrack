@@ -3,6 +3,7 @@ var app = {
     me: {},
     currentGame: null,
     genres: null,
+    socket: null,
     init: function () {
         var self = this;
 
@@ -19,8 +20,9 @@ var app = {
         });
 
         $('#btnPlay').click(function () {
-            self.currentGame = game;
-            self.currentGame.start();
+            self.play();
+            // self.currentGame = game;
+            // self.currentGame.start();
         });
     },
     connect: function () {
@@ -39,6 +41,20 @@ var app = {
         }).fail(function (jqXHR, textStatus) {
             alert(textStatus);
         });
+    },
+    play: function () {
+        var self = this;
+        this.socket = io();
+        this.socket.emit('joinRoom', this.me);
+
+        this.socket.on('joinedRoom', function (gameRoom) {
+            if (gameRoom.users.length <= 1) {
+                self.currentGame = game;
+                self.currentGame.start('create', gameRoom);
+            } else if() {
+                self.currentGame.start('wait', gameRoom);
+            }
+        });
     }
 };
 
@@ -46,7 +62,16 @@ var game = {
     sets: [],
     currentSet: null,
     alreadyPlayedTracks: [],
-    start: function () {
+    start: function (action, gameRoom) {
+        var self = this;
+        if (action === 'create') {
+            this.choiceGenre();
+        } else if (action === 'wait') {
+            this.wait();
+        }
+    },
+
+    choiceGenre: function () {
         var self = this;
         var choiceGenre = new Promise(function (resolve, reject) {
             genreManager.init(resolve, reject)
@@ -54,6 +79,18 @@ var game = {
         choiceGenre.then(function (genre) {
             self.launchSet(genre);
         });
+    },
+
+    wait: function () {
+
+        app.socket.on('sendedSet', function (set) {
+            self.sets.push(set);
+            self.currentSet = set;
+
+            // $('#title-genre').html(set.genre);
+            // self.showQuestionsPage(set, 0);
+        });
+        
     },
 
     launchSet: function (genre) {
@@ -71,6 +108,8 @@ var game = {
                     opposante: {}
                 }
             };
+
+            app.socket.on('sendSet', set);
             self.sets.push(set);
             self.currentSet = set;
             $('#title-genre').html(set.genre);
@@ -288,11 +327,6 @@ var questionManager = {
 
 
 app.init();
-
-
-
-// 
-
 
 Array.prototype.objectInArray = function (object, comparator) {
     var find = false;
