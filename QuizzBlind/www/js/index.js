@@ -84,7 +84,7 @@ var app = {
         var response = {
             info: {
                 id: trackRand.id,
-                name: trackRand.title,
+                name: trackRand.artist.name + ' - <em>' + trackRand.title + '</em>',
                 isResponse: true
             },
             preview: trackRand.preview
@@ -100,7 +100,7 @@ var app = {
             if (!propositions.objectInArray(trackRand, 'id')) {
                 propositions.push({
                     id: trackRand.id,
-                    name: trackRand.title,
+                    name: trackRand.artist.name + ' - <em>' + trackRand.title + '</em>',
                     isResponse: false
                 });
             }
@@ -114,25 +114,88 @@ var app = {
     },
 
     displayQuestion: function (set) {
-        var question = set.questions[0];
-        var propositions = question.propositions.shuffle();
-        console.log(set);   
         $('#title-genre').html(set.genre);
+        questionManager.init(set.questions[0]);
 
-        for (var i = 0; i < propositions.length; i++) {
-            $('#propositions').append('<a href="#" data-transition="fade" onclick="" class="ui-btn ui-icon-play ui-btn-icon-left ui-btn-proposition">' + propositions[i].name + '</a>');
-        }
+        // for (var i = 0; i < propositions.length; i++) {
+        //     questionManager.createBtnProposition(propositions[i]);
+        //     $('#propositions').append('<a href="#" data-transition="fade" onclick="app.isCorrectResponse(this, ' + propositions[i].isResponse + ')" class="ui-btn ui-icon-play ui-btn-icon-left ui-btn-proposition">' + propositions[i].name + '</a>');
+        // }
         
-        var trackPlayer = new Audio(question.preview);
+        // var trackPlayer = new Audio(question.preview);
+        // trackPlayer.play();
+        // var $progressBarProgression = $('.progressBarProgression');
+        // trackPlayer.addEventListener('timeupdate', function () {
+        //     var percent = (trackPlayer.currentTime * 100 / trackPlayer.duration);
+        //     $progressBarProgression.css('width', percent + '%');
+        //     if (percent === 100) {
+        //         alert('Perdu !!!');
+        //     }
+        // });
+    }
+
+};
+
+
+var questionManager = {
+    question: null,
+    $btnResponse: null,
+    trackPlayer: null,
+    init: function (question) {
+        this.question = question;
+        this.displayProposition(question.proposition);
+        this.createPlayer(question.preview);
+    },
+    displayProposition: function () {
+        var propositions = this.question.propositions.shuffle();
+        for (var i = 0; i < propositions.length; i++) {
+            this.createBtnProposition(propositions[i]);
+        }
+    },
+    createPlayer: function (preview) {
+        var trackPlayer = new Audio(preview);
         trackPlayer.play();
         var $progressBarProgression = $('.progressBarProgression');
         trackPlayer.addEventListener('timeupdate', function () {
             var percent = (trackPlayer.currentTime * 100 / trackPlayer.duration);
-            console.log(percent);
             $progressBarProgression.css('width', percent + '%');
+            if (percent === 100) {
+                alert('Perdu !!!');
+            }
         });
+
+        this.trackPlayer = trackPlayer;
+    },
+    createBtnProposition: function (proposition) {
+        var self = this;
+        var $btn = $('<a>', {
+            href: '#',
+            dataTransition: 'fade',
+            class: 'ui-btn ui-btn-proposition',
+            html: proposition.name
+        });
+
+        $btn.click(function () {
+            if (proposition.isResponse) {
+                self.animeWin($btn);
+            } else {
+                self.animeLoose($btn);
+            }
+        });
+
+        $btn.appendTo($('#propositions'));
+
+        if (proposition.isResponse) {
+            this.$btnResponse = $btn;
+        }
+    },
+    animeWin: function ($btn) {
+
+    },
+    animeLoose: function ($btn) {
+
     }
-};
+}
 
 
 Array.prototype.objectInArray = function (object, comparator) {
