@@ -6,5 +6,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "com.phonegap.plugins.facebookconnect": {
+        "source": {
+            "type": "registry",
+            "id": "com.phonegap.plugins.facebookconnect"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
