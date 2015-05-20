@@ -26,10 +26,9 @@ _______________________________________*/
 .ui-page-theme-a header.ui-bar-inherit
  {
     background-color:#f3EDD3;
-    padding:10px 0;
     border:none;
 }
-.ui-page-theme-a main .ui-btn {
+html .ui-page-theme-a main .ui-btn {
   padding: 20px;
   border-radius: 3px;
   margin: 25px 0;
@@ -37,10 +36,43 @@ _______________________________________*/
       border: none;
       font-family: 'Signika', sans-serif;
 }
+
+html .ui-page-theme-a  .ui-btn.connection-btn {
+      background-color: #1c6b97;
+  color: white;
+  text-shadow: 0 0 0 rgba(0,0,0,0);
+  text-transform: uppercase;
+  font-size: 20px;
+}
+
+.ui-header-fixed.ui-fixed-hidden .ui-btn-left, .ui-header-fixed.ui-fixed-hidden .ui-btn-right {
+margin-top:16px;}
 .ui-page-theme-a .ui-btn.ui-btn-proposition {
   background-color: #20D6C7;
   /*font-family: 'Signika', sans-serif;*/
   color: white;
+}
+
+header.ui-header-fixed > a.ui-btn  {
+    margin-top:17px;
+    background-color:#1c6b97 !important;
+    border:none;
+}
+
+header.ui-header-fixed > a.ui-btn:hover,
+header.ui-header-fixed > a.ui-btn:active {
+    background-color:#D54F58;
+}
+
+header.ui-header-fixed > a.ui-btn::after  {
+    background-color:transparent;
+}
+
+header.ui-header .ui-title {
+    margin: 0 10%;
+}
+header.ui-header .ui-title img {
+    max-width:240px;
 }
 
 main.ui-content {
@@ -61,4 +93,16 @@ main.ui-content {
 .progressBarProgression {
     height:10px;
     background:#d54F58;
+}
+
+#propositions {
+perspective:5000px;}
+
+a.ui-btn.ui-btn-proposition:hover,
+a.ui-btn.ui-btn-proposition:active {
+  transform: translateZ(100px);
+  transition: all cubic-bezier(0.67, 0.1, 0.35, 0.89) 0.5s;
+  transform-origin: top;
+  transform-style: flat;
+  text-shadow:none;
 }
