@@ -13,15 +13,5 @@
 		"id": 3,
 		"genre": "Jazz",
 		"playlist_id": 1082641841
-	},
-	{
-		"id": 4,
-		"genre": "Rap",
-		"playlist_id": 1082641841
-	},
-	{
-		"id": 5,
-		"genre": "Funk",
-		"playlist_id": 1082641841
 	}
 ]

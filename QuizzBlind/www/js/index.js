@@ -16,7 +16,7 @@ var app = {
         var list = '';
         $('#list-genre').empty();
         for (var i = 0; i < genres.length; ++i) {
-            $('#list-genre').append('<a href="#gameStart" data-transition="fade" class="ui-btn ui-icon-play ui-btn-icon-left" onclick="app.launchSet(' + genres[i].id + ')">' + genres[i].genre + '</a>');
+            $('#list-genre').append('<a href="#gameStart" data-transition="fade" class="ui-btn ui-icon-play ui-btn-icon-left ui-btn-genre" onclick="app.launchSet(' + genres[i].id + ')">' + genres[i].genre + '</a>');
         }
     },
 
@@ -48,7 +48,7 @@ var app = {
                 questions: self.createSet(trackList.tracks.data)
             };
 
-            self.displayQuestion(set.questions[0]);
+            self.displayQuestion(set);
         });
     },
 
@@ -110,11 +110,27 @@ var app = {
 
     getRandomTrack: function (trackList) {
         var idTrack = Math.floor(Math.random() * trackList.length);
-        return trackList[idTrack];
+        return trackList[idTrack];  
     },
 
-    displayQuestion: function (question) {
+    displayQuestion: function (set) {
+        var question = set.questions[0];
+        var propositions = question.propositions.shuffle();
+        console.log(set);   
+        $('#title-genre').html(set.genre);
+
+        for (var i = 0; i < propositions.length; i++) {
+            $('#propositions').append('<a href="#" data-transition="fade" onclick="" class="ui-btn ui-icon-play ui-btn-icon-left ui-btn-proposition">' + propositions[i].name + '</a>');
+        }
         
+        var trackPlayer = new Audio(question.preview);
+        trackPlayer.play();
+        var $progressBarProgression = $('.progressBarProgression');
+        trackPlayer.addEventListener('timeupdate', function () {
+            var percent = (trackPlayer.currentTime * 100 / trackPlayer.duration);
+            console.log(percent);
+            $progressBarProgression.css('width', percent + '%');
+        });
     }
 };
 
