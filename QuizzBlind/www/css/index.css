@@ -29,10 +29,12 @@ body {
 
 /*_____________THEME GENERAL
 _______________________________________*/
+
 .ui-page-theme-a header.ui-bar-inherit
  {
     background-color:#f3EDD3;
     border:none;
+    padding: 10px 0;
 }
 html .ui-page-theme-a main .ui-btn {
   padding: 20px;
@@ -43,7 +45,7 @@ html .ui-page-theme-a main .ui-btn {
       font-family: 'Signika', sans-serif;
 }
 
-html .ui-page-theme-a  .ui-btn#connect {
+html .ui-page-theme-a .ui-btn#connect {
       background-color: #1c6b97;
   color: white;
   text-shadow: 0 0 0 rgba(0,0,0,0);
@@ -52,10 +54,17 @@ html .ui-page-theme-a  .ui-btn#connect {
 }
 
 .ui-header-fixed.ui-fixed-hidden .ui-btn-left, .ui-header-fixed.ui-fixed-hidden .ui-btn-right {
-margin-top:16px;}
-.ui-page-theme-a .ui-btn.ui-btn-proposition {
+margin-top:16px;
+}
+
+.ui-page-theme-a .ui-btn.ui-btn-proposition,
+.ui-page-theme-a .ui-btn.ui-play-btn {
   background-color: #20D6C7;
-  /*font-family: 'Signika', sans-serif;*/
+  color: white;
+}
+
+.ui-page-theme-a .ui-btn.ui-currentGames-btn {
+  background-color: #d54f58;
   color: white;
 }
 
@@ -76,6 +85,7 @@ header.ui-header-fixed > a.ui-btn::after  {
 
 header.ui-header .ui-title {
     margin: 0 10%;
+      padding: 0;
 }
 header.ui-header .ui-title img {
     max-width:240px;
@@ -110,6 +120,7 @@ a.ui-btn.ui-btn-proposition:focus {
 
 .ui-page {
 background-color:#fffcef;}
+
 a.ui-btn.ui-btn-proposition.winning-btn {
   transform: translateZ(200px);
   transition: all cubic-bezier(0.67, 0.1, 0.35, 0.89) 0.3s 0.6s;
@@ -118,7 +129,6 @@ a.ui-btn.ui-btn-proposition.winning-btn {
   text-shadow:none;
   outline: none
 }
-
 
 a.ui-btn.ui-btn-proposition.losing-btn {
   transform: translateZ(-250px);
@@ -134,4 +144,43 @@ a.ui-btn.ui-btn-proposition.losing-btn {
 a.ui-btn.ui-btn-proposition.losing-btn.picked-loser-btn {
       transition: all cubic-bezier(0.67, 0.1, 0.35, 0.89) 0.3s 0s;
       opacity:0.7;
+}
+
+.scoreBoard *{
+  font-size:23px;
+  margin:20px 0;
+}
+#currentGame {
+  font-size:0;
+}
+.third-large-column {
+  width:35%;
+  display:inline-block;
+  vertical-align:middle;
+}
+
+.third-small-column {
+  width:20%;
+  margin:0 5%;
+  display:inline-block;
+  vertical-align:middle;
+}
+.scoreSingleDetail {
+  margin:20px 0;
+}
+.scoreSingleDetail .disabled {
+  opacity:0.3;
+}
+.scoreSingleDetail img {
+    width: 30%;
+  margin: 0 1.5%;
+}
+
+.scoreSingleDetail .third-small-column {
+  font-size: 18px;
+  color: #113F58;
+}
+
+.setCategory {
+  display:block;
 }
