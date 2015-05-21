@@ -4,6 +4,7 @@ var app = {
     currentGame: null,
     genres: null,
     socket: null,
+
     init: function () {
         var self = this;
 
@@ -13,9 +14,10 @@ var app = {
 
         this.bindEvent();
     },
+
     bindEvent: function () {
         var self = this;
-        $('#connect').click(function () {
+        $('#connect a').click(function () {
             self.connect();
         });
 
@@ -45,7 +47,15 @@ var app = {
 
     play: function () {
         var self = this;
-        this.socket = io();
+
+        if (self.currentGame !== null) {
+            self.socket = null;
+            self.currentGame.clear();
+            self.currentGame = null;
+            self.play();
+        }
+
+        this.socket = io('https://battletrack-nodejs-raphachoquet.c9.io');
         this.socket.emit('joinRoom', this.me);
 
         this.socket.on('joinedRoom', function (gameRoom) {
@@ -56,9 +66,11 @@ var app = {
             } else if (gameRoom.users.length <= 1) {
                 self.currentGame = game;
                 self.currentGame.start('create', gameRoom);
+                $( ":mobile-pagecontainer" ).pagecontainer("change", '#themeSelection');
             } else {
                 self.currentGame = game;
                 self.currentGame.start('wait', gameRoom);
+                $( ":mobile-pagecontainer" ).pagecontainer("change", '#gameWait');
             }
         });
 
@@ -66,7 +78,7 @@ var app = {
             if (!self.currentGame.waitTostart) {
 
             } else {
-                self.currentGame.activeBtnStart(set);       
+                self.currentGame.finishWait(set);       
             }
         });
 
@@ -74,6 +86,21 @@ var app = {
             self.currentGame.currentSet.result.opposant = opposantResult;
             self.currentGame.displayResultsOfSet('opposant', self.currentGame.currentSet);
         });
+
+
+        this.socket.on('disconnected', function () {
+            alert('Excusez-nous, votre adversaire a abandonner la partie.');
+            self.socket = null;
+            self.currentGame.clear();
+            self.currentGame = null;
+            $( ":mobile-pagecontainer" ).pagecontainer( "change", '#lobby');
+        });
+
+        this.socket.on('endedGame', function () {
+            self.socket = null;
+            self.currentGame.clear();
+            self.currentGame = null;
+        }); 
     },
 
     findOpposant: function (users) {
@@ -99,6 +126,16 @@ var game = {
     alreadyPlayedTracks: [],
     waitTostart: false,
     opposant: null,
+    
+    clear: function () {
+        this.id = null;
+        this.sets = [];
+        this.currentSet = null;
+        this.alreadyPlayedTracks = [];
+        this.waitTostart = false;
+        this.opposant = null;
+    },
+
     start: function (action, gameRoom) {
 
         var self = this;
@@ -111,21 +148,27 @@ var game = {
             $('.opponentPlayer').text(self.opposant);
             this.waitTostart = true;
             if (typeof gameRoom.set !== 'undefined') {
-                this.activeBtnStart(gameRoom.set);
+                this.finishWait(gameRoom.set);
             }
         }
         
     },
-    activeBtnStart: function (set) {
+
+    finishWait: function (set) {
         var self = this;
         self.waitTostart = false;
         self.sets.push(set);
         self.currentSet = set;
-        $('#wait p').fadeOut(function () {
+        $('#wait .waiting').fadeOut(function () {
+            $('#wait .theme').html('Théme: ' + self.currentSet.genre);
+            $('#wait .theme').fadeIn();
             $('#wait a').fadeIn().click(function () {
                 self.launchSet(set);
             });
         });
+        if (typeof self.currentSet.result.opposant !== "undefined") {
+            self.displayResultsOfSet('opposant', self.currentSet);
+        }
     },
 
     choiceGenre: function () {
@@ -248,6 +291,12 @@ var game = {
                 self.showQuestionsPage(set, page);
             } else {
                 self.showSummaryGame(set);
+                if(typeof set.result.opposant !== "undefined") {
+                    app.socket.emit('endGame', self.id);
+                    app.socket = null;
+                    app.currentGame.clear();
+                    app.currentGame = null;
+                }
             }
         });
     },
@@ -262,14 +311,10 @@ var game = {
         $set.find('.setCategory').text(set.genre);
         $set.find('img').removeClass('disabled');
 
-        $( ":mobile-pagecontainer" ).pagecontainer( "change", '#currentGame');
-       
+        $( ":mobile-pagecontainer" ).pagecontainer( "change", '#currentGame'); 
         this.displayResultsOfSet('me', set);
-
-        // if (typeof set.result.opposant !== 'undefined') {
-        //     this.displayResultsOfSet('opposant', set);
-        // }
     },
+
     displayResultsOfSet: function (key, set) {
         var self = this;
         var $set = $('#set-' + set.id);
@@ -338,12 +383,14 @@ var questionManager = {
     question: null,
     $btnResponse: null,
     trackPlayer: null,
+
     init: function (resolve, question) {
         this.resolve = resolve;
         this.question = question;
         this.displayProposition(question.proposition);
         this.createPlayer(question.preview);
     },
+
     displayProposition: function () {
         var propositions = this.question.propositions.shuffle();
         $('#propositions').empty();
@@ -351,6 +398,7 @@ var questionManager = {
             this.createBtnProposition(propositions[i]);
         }
     },
+
     createPlayer: function (preview) {
         var self = this;
         var trackPlayer = new Audio(preview);
@@ -366,6 +414,7 @@ var questionManager = {
 
         this.trackPlayer = trackPlayer;
     },
+
     createBtnProposition: function (proposition) {
         var self = this;
         var $btn = $('<a>', {
@@ -391,12 +440,14 @@ var questionManager = {
             this.$btnResponse = $btn;
         }
     },
+
     win: function ($btn) {
         var self = this;
         this.trackPlayer.pause();
         $btn.addClass('winning-btn');
         $('#propositions a').not(self.$btnResponse).addClass('losing-btn');
 
+        $('#overlay').show();
         document.addEventListener('click', overWinClick, false);
 
         function overWinClick(evt) {
@@ -404,10 +455,12 @@ var questionManager = {
             evt.preventDefault();
             evt.stopPropagation();
             document.removeEventListener('click', overWinClick, false);
+            $('#overlay').hide();
             self.next(true);
         }
 
     },
+
     lose: function ($btn) {
         var self = this;
         this.trackPlayer.pause();
@@ -417,15 +470,18 @@ var questionManager = {
         $('#propositions a').not(self.$btnResponse).addClass('losing-btn');
         $(self.$btnResponse).addClass('winning-btn');
 
+        $('#overlay').show();
         document.addEventListener('click', overLoseClick, false);
 
         function overLoseClick(evt) {
             evt.preventDefault();
             evt.stopPropagation();
             document.removeEventListener('click', overLoseClick,false);
+            $('#overlay').hide();
             self.next(false);
         }
     },
+
     next: function (haveWin) {
         delete this.trackPlayer;
         this.resolve(haveWin);

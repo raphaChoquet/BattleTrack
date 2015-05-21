@@ -17,22 +17,21 @@
 
 
             <main role="main" class="ui-content">
-            <div class="logosContainer">
-                <img src="img/logo.svg" class="iconicLogo">
-                <img src="img/logoName.svg">
-            </div>
-                <a id="" href="#lobby" data-transition="fade" class="ui-btn fb-connect">CONNECTION FACEBOOK</a>
-                <a id="connect" href="#lobby" data-transition="fade" class="ui-btn classic-connect">SE CONNECTER</a>
-                <a id="" href="#lobby" data-transition="fade" class="ui-btn account-create">CRÉER UN COMPTE</a>
-
+                <div class="logosContainer">
+                    <img src="img/logo.svg" class="iconicLogo">
+                    <img src="img/logoName.svg">
+                </div>
+                <a href="#lobby" data-transition="fade" class="ui-btn fb-connect">CONNECTION FACEBOOK</a>
+                <a href="#lobby" data-transition="fade" class="ui-btn classic-connect">SE CONNECTER</a>
+                <a href="#lobby" data-transition="fade" class="ui-btn account-create">CRÉER UN COMPTE</a>
             </main>
         </div>
 
 
         <div data-role="page" id="lobby">
             <header data-role="header" data-position="fixed">
-                <a href="#bar" data-transition="slide" class="ui-btn ui-icon-gear ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
-                <a href="#connect" data-direction="reverse" data-transition="slide" class="ui-btn ui-icon-power ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a>
+<!--            <a href="#bar" data-transition="slide" class="ui-btn ui-icon-gear ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
+                <a href="#connect" data-direction="reverse" data-transition="slide" class="ui-btn ui-icon-power ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a> -->
                 <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
             </header><!-- /header -->
 
@@ -42,41 +41,45 @@
                 <img src="img/logoName.svg">
             </div>
                 <h2 id="user"></h2>
-                <a id="btnPlay" href="#themeSelection" data-transition="fade" class="ui-btn ui-play-btn">Nouvelle partie</a>
-                <a id="btnPlay" href="#currentGame" data-transition="slide" class="ui-btn ui-currentGames-btn">Partie en cours</a>
+                <button id="btnPlay" type="button" class="ui-btn ui-play-btn">Nouvelle Partie</button>
+                <a href="#currentGame" data-transition="slide" class="ui-btn ui-currentGames-btn" style="display:none;">Partie en cours</a>
             </main>
         </div>
 
         <div data-role="page" id="themeSelection">
             <header data-role="header" data-position="fixed">
-               <a href="#b" data-transition="slide" class="ui-btn ui-icon-gear ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
-               <a href="#lobby" data-direction="reverse" data-transition="slide" class="ui-btn ui-icon-carat-l ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a>
                 <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
             </header><!-- /header -->
 
             <main role="main" class="ui-content" id="choiceGenre" style="display:none;">
                 <img src="img/logo.svg" class="playImage">
-                <h2> Choisis ton thème !</h2>
+                <h2>Choisis ton thème !</h2>
                 <div id="list-genre">
                 </div>
             </main>
+        </div>
+
+        <div data-role="page" id="gameWait">
+            <header data-role="header" data-position="fixed">
+                <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
+            </header><!-- /header -->
 
             <main role="main" class="ui-content" id="wait" style="display:none;">
                 <img src="img/logo.svg" class="playImage">
-                <h2> Joue contre <span class="opponentPlayer"></span></h2>
-                <p>En attente du choix du théme par l'adversaire</p>
+                <h2>Joue contre <span class="opponentPlayer"></span></h2>
+                <p class="waiting">En attente du choix du théme par l'adversaire</p>
+                <p class="theme"></p>
                 <a href="#gameStart" data-transition="fade" class="ui-btn ui-icon-lock ui-btn-icon-left" style="display:none;">Commencer</a>
             </main>
         </div>
 
         <div data-role="page" id="gameStart">
             <header data-role="header" data-position="fixed">
-               
                 <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
             </header><!-- /header -->
 
             <main role="main" class="ui-content">
-                <h2 id="title-genre">NOM DE LA CATEGORIE</h2>
+                <h2 id="title-genre">En chargement</h2>
                 <img src="img/logo.svg" class="playImage">
                 <div class="progressBarContainer">
                     <div class="progressBarProgression" style="width:0%;"></div>
@@ -84,6 +87,7 @@
                 <div id="propositions">
                 </div>   
             </main>
+            <div id="overlay"></div>
         </div>
 
         <div data-role="page" id="currentGame">
@@ -171,16 +175,12 @@
                             <img src="img/iconPlaying.png" class="disabled">
                         </span>
                     </div>
-
-                    <a id="" href="#themeSelection" data-transition="fade" class="ui-btn ui-play-btn">Jouer</a>
-                     <a id="" href="#lobby" data-transition="slide" data-direction="reverse" class="ui-btn ui-currentGames-btn">Retour</a>
-
+                    <a href="#lobby" data-transition="slide" data-direction="reverse" class="ui-btn ui-currentGames-btn">Retour</a>
                 </div>
-
             </main>
         </div>
 
-        <script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="https://battletrack-nodejs-raphachoquet.c9.io/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
          <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
