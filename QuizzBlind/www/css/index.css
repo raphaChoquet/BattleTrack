@@ -138,14 +138,18 @@ a.ui-btn.ui-btn-proposition:focus {
     box-shadow:none;
 }
 
-.ui-page {
+.ui-page, body .ui-page-theme-a .ui-panel-wrapper {
 background-color:#fffcef;}
 
 a.ui-btn.ui-btn-proposition.winning-btn {
   transform: translateZ(200px);
+  -webkit-transform: translateZ(200px);
   transition: all cubic-bezier(0.67, 0.1, 0.35, 0.89) 0.3s 0.6s;
+  -webkit-transition: all cubic-bezier(0.67, 0.1, 0.35, 0.89) 0.3s 0.6s;
   transform-origin: top;
   transform-style: flat;
+  -webkit-transform-origin: top;
+  -webkit-transform-style: flat;
   text-shadow:none;
   outline: none
 }
@@ -155,6 +159,10 @@ a.ui-btn.ui-btn-proposition.losing-btn {
   transition: all cubic-bezier(0.67, 0.1, 0.35, 0.89) 0.3s 0.3s;
   transform-origin: top;
   transform-style: flat;
+  -webkit-transform: translateZ(-250px);
+  -webkit-transition: all cubic-bezier(0.67, 0.1, 0.35, 0.89) 0.3s 0.3s;
+  -webkit-transform-origin: top;
+  -webkit-transform-style: flat;
   background-color:#d54F58;
   text-shadow:none;
   opacity:0.4;
@@ -208,3 +216,32 @@ a.ui-btn.ui-btn-proposition.losing-btn.picked-loser-btn {
 .setCategory {
   display:block;
 }
+
+.endendGameSingle {
+    background-color: lightgrey;
+  border-radius: 3px;
+  min-height: 56px;
+  font-size: 0;
+}
+
+.endendGameSingle > div {
+  display:inline-block;
+  font-size:15px;
+    padding: 5px 0;
+}
+
+.endedGameDetails {
+  width:65%;
+}
+
+.endedGameResult {
+  width: 35%;
+  line-height: 56px;
+  background-color: rgba(0,0,0,0.1);
+}
+
+
+
+
+
+
