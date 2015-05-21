@@ -29,8 +29,12 @@
 
 
         <div data-role="page" id="lobby">
+
+            <div data-role="panel" id="panelMenu" data-position="right" data-display="psuh">
+                MENU
+            </div>
             <header data-role="header" data-position="fixed">
-<!--            <a href="#bar" data-transition="slide" class="ui-btn ui-icon-gear ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
+<!--             <a href="#panelMenu" data-transition="slide" class="ui-btn ui-icon-gear ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
                 <a href="#connect" data-direction="reverse" data-transition="slide" class="ui-btn ui-icon-power ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a> -->
                 <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
             </header><!-- /header -->
@@ -43,10 +47,33 @@
                 <h2 id="user"></h2>
                 <button id="btnPlay" type="button" class="ui-btn ui-play-btn">Nouvelle Partie</button>
                 <a href="#currentGame" data-transition="slide" class="ui-btn ui-currentGames-btn" style="display:none;">Partie en cours</a>
+
+                <div class="endedGames">
+                    <h3>Parties terminées</h3>
+                    <div class="endendGameSingle">
+                        <div class="endedGameDetails">
+                            <span class="selfPlayer">Vous</span>
+                            <span class="endedGameScore">
+                                <span class="selfScore">2</span>
+                                    - 
+                                <span class="opponentScore">1</span>
+                            </span>
+                            <span class="opponent">Scordrix</span>
+                        </div>
+
+                        <div class="endedGameResult">
+                            Gagné !
+                        </div>
+                    </div>
+
+                </div>
             </main>
         </div>
 
         <div data-role="page" id="themeSelection">
+        <div data-role="panel" id="panelMenu" data-position="right" data-display="psuh">
+                MENU
+            </div>
             <header data-role="header" data-position="fixed">
                 <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
             </header><!-- /header -->
