@@ -27,7 +27,7 @@ var app = {
     connect: function () {
         this.me = {
             username: prompt('Username :')
-        }
+        };
         $('#user').html('Bienvenue ' + this.me.username);
     },
 
@@ -50,6 +50,8 @@ var app = {
 
         this.socket.on('joinedRoom', function (gameRoom) {
             if  (self.currentGame !== null) {
+                self.currentGame.opposant = app.findOpposant(gameRoom.users).username;
+                $('.opponentPlayer').text(self.currentGame.opposant);
 
             } else if (gameRoom.users.length <= 1) {
                 self.currentGame = game;
@@ -67,21 +69,26 @@ var app = {
                 self.currentGame.activeBtnStart(set);       
             }
         });
+
+        this.socket.on('sendedResult', function (opposantResult) {
+            self.currentGame.currentSet.result.opposant = opposantResult;
+            self.currentGame.displayResultsOfSet('opposant', self.currentGame.currentSet);
+        });
     },
 
-    findOpposante: function (users) {
+    findOpposant: function (users) {
         var find = false;
         var i = 0;
-        var opposante = null;
+        var opposant = null;
         while(!find && i < users.length) {
             if (users[i].username !== this.me.username) {
                 find = true;
-                opposante = users[i];
+                opposant = users[i];
             }
             i++;
         }   
 
-        return opposante; 
+        return opposant; 
     }   
 };
 
@@ -91,7 +98,7 @@ var game = {
     currentSet: null,
     alreadyPlayedTracks: [],
     waitTostart: false,
-    opposante: null,
+    opposant: null,
     start: function (action, gameRoom) {
 
         var self = this;
@@ -100,8 +107,8 @@ var game = {
             this.choiceGenre();
         } else {
             $('#wait').fadeIn();
-            self.opposante = app.findOpposante(gameRoom.users).username;
-            $('#wait .opposante').text(self.opposante);
+            self.opposant = app.findOpposant(gameRoom.users).username;
+            $('.opponentPlayer').text(self.opposant);
             this.waitTostart = true;
             if (typeof gameRoom.set !== 'undefined') {
                 this.activeBtnStart(gameRoom.set);
@@ -112,6 +119,8 @@ var game = {
     activeBtnStart: function (set) {
         var self = this;
         self.waitTostart = false;
+        self.sets.push(set);
+        self.currentSet = set;
         $('#wait p').fadeOut(function () {
             $('#wait a').fadeIn().click(function () {
                 self.launchSet(set);
@@ -138,11 +147,11 @@ var game = {
 
         retrievedTracks.then(function (tracksList) {
             var set = {
+                id: self.sets.length,
                 genre: genre.name,
                 questions: self.createSet(tracksList.tracks.data),
                 result: {
-                    me: {},
-                    opposante: {}
+                    me: {total: 0}
                 }
             };
 
@@ -151,14 +160,14 @@ var game = {
                 set: set
             }
             app.socket.emit('sendSet', gameRoom);
+            self.sets.push(set);
+            self.currentSet = set;
             self.launchSet(set);
         });
     },
 
     launchSet: function (set) {
             var self = this;
-            self.sets.push(set);
-            self.currentSet = set;
             $('#title-genre').html(set.genre);
             self.showQuestionsPage(set, 0);
     },
@@ -231,13 +240,45 @@ var game = {
 
         waitResponse.then(function (haveWin) {
             set.result.me['question-' + page] = haveWin;
+            if (haveWin) {
+                set.result.me.total++;
+            }
             page++;
             if (page < 3) {
                 self.showQuestionsPage(set, page);
             } else {
-                alert(JSON.stringify(set.result.me));
+                self.showSummaryGame(set);
             }
         });
+    },
+
+    showSummaryGame: function (set) {
+        var param = {
+            id: this.id,
+            result: set.result.me
+        };
+        var $set = $('#set-' + set.id);
+        app.socket.emit('sendResult', param);
+        $set.find('.setCategory').text(set.genre);
+        $set.find('img').removeClass('disabled');
+
+        $( ":mobile-pagecontainer" ).pagecontainer( "change", '#currentGame');
+       
+        this.displayResultsOfSet('me', set);
+
+        // if (typeof set.result.opposant !== 'undefined') {
+        //     this.displayResultsOfSet('opposant', set);
+        // }
+    },
+    displayResultsOfSet: function (key, set) {
+        var self = this;
+        var $set = $('#set-' + set.id);
+        $set.find('.result-' + key + ' img').each( function (id, elmnt) {
+            elmnt.src = set.result[key]['question-' + id] ? 'img/iconWin.png': 'img/iconLoose.png';
+        });
+
+        var score = parseInt($('.' + key + 'Score').text());
+        $('.' + key + 'Score').text(score + set.result[key].total);
     }
 };
 

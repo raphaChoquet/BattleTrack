@@ -59,7 +59,7 @@
 
             <main role="main" class="ui-content" id="wait" style="display:none;">
                 <img src="img/logo.svg" class="playImage">
-                <h2> Joue contre <span class="opposante"></span></h2>
+                <h2> Joue contre <span class="opponentPlayer"></span></h2>
                 <p>En attente du choix du théme par l'adversaire</p>
                 <a href="#gameStart" data-transition="fade" class="ui-btn ui-icon-lock ui-btn-icon-left" style="display:none;">Commencer</a>
             </main>
@@ -82,7 +82,7 @@
             </main>
         </div>
 
-              <div data-role="page" id="currentGame">
+        <div data-role="page" id="currentGame">
             <header data-role="header" data-position="fixed">
                
                 <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
@@ -92,54 +92,54 @@
                <div class="scoreBoard">
                    <span class="selfPlayer third-large-column">Vous</span>
                    <div class="playerScores third-small-column">
-                        <span class="selfScore">2</span>
+                        <span class="meScore">0</span>
                          - 
-                        <span class="opponentScore">1</span>
+                        <span class="opposantScore">0</span>
                     </div>
-                    <span class="opponentPlayer third-large-column">Racoon45</span>
+                    <span class="opponentPlayer third-large-column">Adversaire</span>
                     <div class="clear"></div>
                </div>
                 
                 <div id="scoreDetails">
-                    <div class="scoreSingleDetail">
-                        <span class="third-large-column">
-                            <img src="img/iconWin.png">
-                            <img src="img/iconWin.png">
-                            <img src="img/iconLoose.png">
+                    <div id="set-0" class="scoreSingleDetail">
+                        <span class="third-large-column result-me">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
                         </span>
                         <span class="third-small-column">
                             <span class="setCounter">SET 1</span>
-                            <span class="setCategory">METAL</span>
+                            <span class="setCategory">---</span>
                         </span>
-                        <span class="third-large-column">
-                            <img src="img/iconWin.png">
-                            <img src="img/iconLoose.png">
-                            <img src="img/iconLoose.png">
+                        <span class="third-large-column result-opposant">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
                         </span>
                     </div>
 
                     <div class="scoreSingleDetail">
                         <span class="third-large-column">
-                            <img src="img/iconLoose.png">
-                            <img src="img/iconLoose.png">
-                            <img src="img/iconLoose.png">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
                         </span>
                         <span class="third-small-column">
                             <span class="setCounter">SET 2</span>
-                            <span class="setCategory">FUNK</span>
+                            <span class="setCategory">---</span>
                         </span>
                         <span class="third-large-column">
-                            <img src="img/iconWin.png">
-                            <img src="img/iconWin.png">
-                            <img src="img/iconLoose.png">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
                         </span>
                     </div>
 
                      <div class="scoreSingleDetail">
                         <span class="third-large-column">
-                            <img src="img/iconPlaying.png">
-                            <img src="img/iconPlaying.png">
-                            <img src="img/iconPlaying.png">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
                         </span>
                         <span class="third-small-column">
                             <span class="setCounter">SET 3</span>
