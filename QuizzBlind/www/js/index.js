@@ -21,16 +21,16 @@ var app = {
 
         $('#btnPlay').click(function () {
             self.play();
-            // self.currentGame = game;
-            // self.currentGame.start();
         });
     },
+
     connect: function () {
         this.me = {
             username: prompt('Username :')
         }
         $('#user').html('Bienvenue ' + this.me.username);
     },
+
     retrievePlaylist: function (resolve, reject, id) {
         $.ajax({
             url: this.api + "playlist/" + id,
@@ -42,58 +42,95 @@ var app = {
             alert(textStatus);
         });
     },
+
     play: function () {
         var self = this;
         this.socket = io();
         this.socket.emit('joinRoom', this.me);
 
         this.socket.on('joinedRoom', function (gameRoom) {
-            if (gameRoom.users.length <= 1) {
+            if  (self.currentGame !== null) {
+
+            } else if (gameRoom.users.length <= 1) {
                 self.currentGame = game;
                 self.currentGame.start('create', gameRoom);
             } else {
+                self.currentGame = game;
                 self.currentGame.start('wait', gameRoom);
             }
         });
-    }
+
+        this.socket.on('sendedSet', function (set) {
+            if (!self.currentGame.waitTostart) {
+
+            } else {
+                self.currentGame.activeBtnStart(set);       
+            }
+        });
+    },
+
+    findOpposante: function (users) {
+        var find = false;
+        var i = 0;
+        var opposante = null;
+        while(!find && i < users.length) {
+            if (users[i].username !== this.me.username) {
+                find = true;
+                opposante = users[i];
+            }
+            i++;
+        }   
+
+        return opposante; 
+    }   
 };
 
 var game = {
+    id: null,
     sets: [],
     currentSet: null,
     alreadyPlayedTracks: [],
+    waitTostart: false,
+    opposante: null,
     start: function (action, gameRoom) {
+
         var self = this;
+        self.id = gameRoom.id;
         if (action === 'create') {
             this.choiceGenre();
-        } else if (action === 'wait') {
-            this.wait();
+        } else {
+            $('#wait').fadeIn();
+            self.opposante = app.findOpposante(gameRoom.users).username;
+            $('#wait .opposante').text(self.opposante);
+            this.waitTostart = true;
+            if (typeof gameRoom.set !== 'undefined') {
+                this.activeBtnStart(gameRoom.set);
+            }
         }
+        
+    },
+    activeBtnStart: function (set) {
+        var self = this;
+        self.waitTostart = false;
+        $('#wait p').fadeOut(function () {
+            $('#wait a').fadeIn().click(function () {
+                self.launchSet(set);
+            });
+        });
     },
 
     choiceGenre: function () {
         var self = this;
+        $('#choiceGenre').fadeIn();
         var choiceGenre = new Promise(function (resolve, reject) {
             genreManager.init(resolve, reject)
         });
         choiceGenre.then(function (genre) {
-            self.launchSet(genre);
+            self.initSet(genre);
         });
     },
 
-    wait: function () {
-
-        app.socket.on('sendedSet', function (set) {
-            self.sets.push(set);
-            self.currentSet = set;
-
-            // $('#title-genre').html(set.genre);
-            // self.showQuestionsPage(set, 0);
-        });
-        
-    },
-
-    launchSet: function (genre) {
+    initSet: function (genre) {
         var self = this;
         var retrievedTracks = new Promise(function (resolve, reject) {
             app.retrievePlaylist(resolve, reject, genre.playlist_id);
@@ -109,12 +146,21 @@ var game = {
                 }
             };
 
-            app.socket.on('sendSet', set);
+            var gameRoom = {
+                id: self.id,
+                set: set
+            }
+            app.socket.emit('sendSet', gameRoom);
+            self.launchSet(set);
+        });
+    },
+
+    launchSet: function (set) {
+            var self = this;
             self.sets.push(set);
             self.currentSet = set;
             $('#title-genre').html(set.genre);
             self.showQuestionsPage(set, 0);
-        });
     },
 
     createSet: function (tracks) {
@@ -306,7 +352,7 @@ var questionManager = {
     },
     win: function ($btn) {
         var self = this;
-
+        this.trackPlayer.pause();
         $btn.addClass('winning-btn');
         $('#propositions a').not(self.$btnResponse).addClass('losing-btn');
 
@@ -323,14 +369,16 @@ var questionManager = {
     },
     lose: function ($btn) {
         var self = this;
-        $btn.addClass('picked-loser-btn');
+        this.trackPlayer.pause();
+        if (typeof $btn !== "undefined") {
+            $btn.addClass('picked-loser-btn');
+        }
         $('#propositions a').not(self.$btnResponse).addClass('losing-btn');
         $(self.$btnResponse).addClass('winning-btn');
 
         document.addEventListener('click', overLoseClick, false);
 
         function overLoseClick(evt) {
-            
             evt.preventDefault();
             evt.stopPropagation();
             document.removeEventListener('click', overLoseClick,false);
@@ -338,7 +386,6 @@ var questionManager = {
         }
     },
     next: function (haveWin) {
-        this.trackPlayer.pause();
         delete this.trackPlayer;
         this.resolve(haveWin);
     }

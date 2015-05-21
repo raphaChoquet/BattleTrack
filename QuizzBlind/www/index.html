@@ -47,11 +47,18 @@
                 <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
             </header><!-- /header -->
 
-            <main role="main" class="ui-content" >
-            <img src="img/logo.svg" class="playImage">
-            <h2> Choisis ton thème !</h2>
-            <div id="list-genre">
-            </div>
+            <main role="main" class="ui-content" id="choiceGenre" style="display:none;">
+                <img src="img/logo.svg" class="playImage">
+                <h2> Choisis ton thème !</h2>
+                <div id="list-genre">
+                </div>
+            </main>
+
+            <main role="main" class="ui-content" id="wait" style="display:none;">
+                <img src="img/logo.svg" class="playImage">
+                <h2> Joue contre <span class="opposante"></span></h2>
+                <p>En attente du choix du théme par l'adversaire</p>
+                <a href="#gameStart" data-transition="fade" class="ui-btn ui-icon-lock ui-btn-icon-left" style="display:none;">Commencer</a>
             </main>
         </div>
 
