@@ -21,16 +21,16 @@ var app = {
 
         $('#btnPlay').click(function () {
             self.play();
-            // self.currentGame = game;
-            // self.currentGame.start();
         });
     },
+
     connect: function () {
         this.me = {
             username: prompt('Username :')
-        }
+        };
         $('#user').html('Bienvenue ' + this.me.username);
     },
+
     retrievePlaylist: function (resolve, reject, id) {
         $.ajax({
             url: this.api + "playlist/" + id,
@@ -42,58 +42,104 @@ var app = {
             alert(textStatus);
         });
     },
+
     play: function () {
         var self = this;
         this.socket = io();
         this.socket.emit('joinRoom', this.me);
 
         this.socket.on('joinedRoom', function (gameRoom) {
-            if (gameRoom.users.length <= 1) {
+            if  (self.currentGame !== null) {
+                self.currentGame.opposant = app.findOpposant(gameRoom.users).username;
+                $('.opponentPlayer').text(self.currentGame.opposant);
+
+            } else if (gameRoom.users.length <= 1) {
                 self.currentGame = game;
                 self.currentGame.start('create', gameRoom);
             } else {
+                self.currentGame = game;
                 self.currentGame.start('wait', gameRoom);
             }
         });
-    }
+
+        this.socket.on('sendedSet', function (set) {
+            if (!self.currentGame.waitTostart) {
+
+            } else {
+                self.currentGame.activeBtnStart(set);       
+            }
+        });
+
+        this.socket.on('sendedResult', function (opposantResult) {
+            self.currentGame.currentSet.result.opposant = opposantResult;
+            self.currentGame.displayResultsOfSet('opposant', self.currentGame.currentSet);
+        });
+    },
+
+    findOpposant: function (users) {
+        var find = false;
+        var i = 0;
+        var opposant = null;
+        while(!find && i < users.length) {
+            if (users[i].username !== this.me.username) {
+                find = true;
+                opposant = users[i];
+            }
+            i++;
+        }   
+
+        return opposant; 
+    }   
 };
 
 var game = {
+    id: null,
     sets: [],
     currentSet: null,
     alreadyPlayedTracks: [],
+    waitTostart: false,
+    opposant: null,
     start: function (action, gameRoom) {
+
         var self = this;
+        self.id = gameRoom.id;
         if (action === 'create') {
             this.choiceGenre();
-        } else if (action === 'wait') {
-            this.wait();
+        } else {
+            $('#wait').fadeIn();
+            self.opposant = app.findOpposant(gameRoom.users).username;
+            $('.opponentPlayer').text(self.opposant);
+            this.waitTostart = true;
+            if (typeof gameRoom.set !== 'undefined') {
+                this.activeBtnStart(gameRoom.set);
+            }
         }
+        
+    },
+    activeBtnStart: function (set) {
+        var self = this;
+        self.waitTostart = false;
+        self.sets.push(set);
+        self.currentSet = set;
+        $('#wait p').fadeOut(function () {
+            $('#wait a').fadeIn().click(function () {
+                self.launchSet(set);
+            });
+        });
     },
 
     choiceGenre: function () {
         var self = this;
+        $('#choiceGenre').fadeIn();
         var choiceGenre = new Promise(function (resolve, reject) {
             genreManager.init(resolve, reject)
         });
         choiceGenre.then(function (genre) {
-            self.launchSet(genre);
+            self.initSet(genre);
         });
     },
 
-    wait: function () {
-
-        app.socket.on('sendedSet', function (set) {
-            self.sets.push(set);
-            self.currentSet = set;
-
-            // $('#title-genre').html(set.genre);
-            // self.showQuestionsPage(set, 0);
-        });
-        
-    },
-
-    launchSet: function (genre) {
+    initSet: function (genre) {
         var self = this;
         var retrievedTracks = new Promise(function (resolve, reject) {
             app.retrievePlaylist(resolve, reject, genre.playlist_id);
@@ -101,20 +147,29 @@ var game = {
 
         retrievedTracks.then(function (tracksList) {
             var set = {
+                id: self.sets.length,
                 genre: genre.name,
                 questions: self.createSet(tracksList.tracks.data),
                 result: {
-                    me: {},
-                    opposante: {}
+                    me: {total: 0}
                 }
             };
 
-            app.socket.on('sendSet', set);
+            var gameRoom = {
+                id: self.id,
+                set: set
+            }
+            app.socket.emit('sendSet', gameRoom);
             self.sets.push(set);
             self.currentSet = set;
+            self.launchSet(set);
+        });
+    },
+
+    launchSet: function (set) {
+            var self = this;
             $('#title-genre').html(set.genre);
             self.showQuestionsPage(set, 0);
-        });
     },
 
     createSet: function (tracks) {
@@ -185,13 +240,45 @@ var game = {
 
         waitResponse.then(function (haveWin) {
             set.result.me['question-' + page] = haveWin;
+            if (haveWin) {
+                set.result.me.total++;
+            }
             page++;
             if (page < 3) {
                 self.showQuestionsPage(set, page);
             } else {
-                alert(JSON.stringify(set.result.me));
+                self.showSummaryGame(set);
             }
         });
+    },
+
+    showSummaryGame: function (set) {
+        var param = {
+            id: this.id,
+            result: set.result.me
+        };
+        var $set = $('#set-' + set.id);
+        app.socket.emit('sendResult', param);
+        $set.find('.setCategory').text(set.genre);
+        $set.find('img').removeClass('disabled');
+
+        $( ":mobile-pagecontainer" ).pagecontainer( "change", '#currentGame');
+       
+        this.displayResultsOfSet('me', set);
+
+        // if (typeof set.result.opposant !== 'undefined') {
+        //     this.displayResultsOfSet('opposant', set);
+        // }
+    },
+    displayResultsOfSet: function (key, set) {
+        var self = this;
+        var $set = $('#set-' + set.id);
+        $set.find('.result-' + key + ' img').each( function (id, elmnt) {
+            elmnt.src = set.result[key]['question-' + id] ? 'img/iconWin.png': 'img/iconLoose.png';
+        });
+
+        var score = parseInt($('.' + key + 'Score').text());
+        $('.' + key + 'Score').text(score + set.result[key].total);
     }
 };
 
@@ -306,7 +393,7 @@ var questionManager = {
     },
     win: function ($btn) {
         var self = this;
-
+        this.trackPlayer.pause();
         $btn.addClass('winning-btn');
         $('#propositions a').not(self.$btnResponse).addClass('losing-btn');
 
@@ -323,14 +410,16 @@ var questionManager = {
     },
     lose: function ($btn) {
         var self = this;
-        $btn.addClass('picked-loser-btn');
+        this.trackPlayer.pause();
+        if (typeof $btn !== "undefined") {
+            $btn.addClass('picked-loser-btn');
+        }
         $('#propositions a').not(self.$btnResponse).addClass('losing-btn');
         $(self.$btnResponse).addClass('winning-btn');
 
         document.addEventListener('click', overLoseClick, false);
 
         function overLoseClick(evt) {
-            
             evt.preventDefault();
             evt.stopPropagation();
             document.removeEventListener('click', overLoseClick,false);
@@ -338,7 +427,6 @@ var questionManager = {
         }
     },
     next: function (haveWin) {
-        this.trackPlayer.pause();
         delete this.trackPlayer;
         this.resolve(haveWin);
     }

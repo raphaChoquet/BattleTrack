@@ -17,7 +17,19 @@ function sockets(server) {
 			}
 
 			socket.join('Room:' + game.id);
+			console.log('User ' + user.username + ' have join Room:' + game.id);
 			io.sockets.to('Room:' + game.id).emit('joinedRoom', game);
+		});
+
+		socket.on('sendSet', function (data) {
+			console.log('Send Set on Room:' + data.id);
+			gameInProgress[data.id].set = data.set;
+			socket.broadcast.to('Room:' + data.id).emit('sendedSet', data.set);
+		});
+
+		socket.on('sendResult', function (data) {
+			console.log('Send Result on Room:' + data.id);
+			socket.broadcast.to('Room:' + data.id).emit('sendedResult', data.result);
 		});
 	});
 	
