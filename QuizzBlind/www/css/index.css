@@ -25,6 +25,7 @@ body {
     background-color:#20d6C7;
       font-size: 35px;
   padding: 15px;
+    margin: 25px 0;
 }
 
 /*_____________THEME GENERAL
@@ -35,22 +36,41 @@ _______________________________________*/
     background-color:#f3EDD3;
     border:none;
     padding: 10px 0;
+
 }
 html .ui-page-theme-a main .ui-btn {
   padding: 20px;
   border-radius: 3px;
-  margin: 25px 0;
     text-shadow: none;
       border: none;
       font-family: 'Signika', sans-serif;
+        margin: 10px 0; 
 }
 
-html .ui-page-theme-a .ui-btn#connect {
-      background-color: #1c6b97;
+html .ui-page-theme-a .ui-btn.fb-connect{
+      background-color: #3B5998;
   color: white;
   text-shadow: 0 0 0 rgba(0,0,0,0);
-  text-transform: uppercase;
-  font-size: 20px;
+
+}
+
+html .ui-page-theme-a .ui-btn.classic-connect,
+html .ui-page-theme-a .ui-btn.account-create {
+  background:#19BEC0;
+   color: white;
+  text-shadow: 0 0 0 rgba(0,0,0,0);
+}
+.logosContainer {
+  max-width:270px;
+  width:100%;
+  margin:90px auto;
+}
+
+#lobby .logosContainer {
+  margin:40px auto;
+}
+.iconicLogo {
+  width:50%;
 }
 
 .ui-header-fixed.ui-fixed-hidden .ui-btn-left, .ui-header-fixed.ui-fixed-hidden .ui-btn-right {
@@ -146,9 +166,13 @@ a.ui-btn.ui-btn-proposition.losing-btn.picked-loser-btn {
       opacity:0.7;
 }
 
-.scoreBoard *{
+.scoreBoard > span{
+  font-size:16px;
+  margin:50px 0;
+}
+
+.scoreBoard .playerScores {
   font-size:23px;
-  margin:20px 0;
 }
 #currentGame {
   font-size:0;
