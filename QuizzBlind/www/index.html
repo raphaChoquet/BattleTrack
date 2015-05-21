@@ -21,7 +21,9 @@
 
             <main role="main" class="ui-content">
 
+                <a id="" href="#lobby" data-transition="fade" class="ui-btn">Connection avec FB</a>
                 <a id="connect" href="#lobby" data-transition="fade" class="ui-btn ui-icon-lock ui-btn-icon-left">Connexion</a>
+                <a id="" href="#lobby" data-transition="fade" class="ui-btn ui-icon-lock ui-btn-icon-left">Créer un compte</a>
 
             </main>
         </div>
@@ -36,7 +38,8 @@
 
             <main role="main" class="ui-content">
                 <h2 id="user"></h2>
-                <a id="btnPlay" href="#themeSelection" data-transition="fade" class="ui-btn ui-icon-play ui-btn-icon-left">Jouer</a>
+                <a id="btnPlay" href="#themeSelection" data-transition="fade" class="ui-btn ui-btn-icon-left ui-play-btn">Jouer</a>
+                <a id="btnPlay" href="#currentGame" data-transition="slide" class="ui-btn ui-btn-icon-left ui-currentGames-btn">Partie en cours</a>
             </main>
         </div>
 
@@ -69,6 +72,100 @@
                 </div>
                 <div id="propositions">
                 </div>   
+            </main>
+        </div>
+
+              <div data-role="page" id="currentGame">
+            <header data-role="header" data-position="fixed">
+               
+                <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
+            </header><!-- /header -->
+
+            <main role="main" class="ui-content">
+               <div class="scoreBoard">
+                   <span class="selfPlayer third-large-column">Vous</span>
+                   <div class="playerScores third-small-column">
+                        <span class="selfScore">2</span>
+                         - 
+                        <span class="opponentScore">1</span>
+                    </div>
+                    <span class="opponentPlayer third-large-column">Racoon45</span>
+                    <div class="clear"></div>
+               </div>
+                
+                <div id="scoreDetails">
+                    <div class="scoreSingleDetail">
+                        <span class="third-large-column">
+                            <img src="img/iconWin.png">
+                            <img src="img/iconWin.png">
+                            <img src="img/iconLoose.png">
+                        </span>
+                        <span class="third-small-column">
+                            <span class="setCounter">SET 1</span>
+                            <span class="setCategory">METAL</span>
+                        </span>
+                        <span class="third-large-column">
+                            <img src="img/iconWin.png">
+                            <img src="img/iconLoose.png">
+                            <img src="img/iconLoose.png">
+                        </span>
+                    </div>
+
+                    <div class="scoreSingleDetail">
+                        <span class="third-large-column">
+                            <img src="img/iconLoose.png">
+                            <img src="img/iconLoose.png">
+                            <img src="img/iconLoose.png">
+                        </span>
+                        <span class="third-small-column">
+                            <span class="setCounter">SET 2</span>
+                            <span class="setCategory">FUNK</span>
+                        </span>
+                        <span class="third-large-column">
+                            <img src="img/iconWin.png">
+                            <img src="img/iconWin.png">
+                            <img src="img/iconLoose.png">
+                        </span>
+                    </div>
+
+                     <div class="scoreSingleDetail">
+                        <span class="third-large-column">
+                            <img src="img/iconPlaying.png">
+                            <img src="img/iconPlaying.png">
+                            <img src="img/iconPlaying.png">
+                        </span>
+                        <span class="third-small-column">
+                            <span class="setCounter">SET 3</span>
+                            <span class="setCategory">---</span>
+                        </span>
+                        <span class="third-large-column">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                        </span>
+                    </div>
+
+                     <div class="scoreSingleDetail">
+                        <span class="third-large-column">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                        </span>
+                        <span class="third-small-column">
+                            <span class="setCounter">SET 4</span>
+                            <span class="setCategory">---</span>
+                        </span>
+                        <span class="third-large-column">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                        </span>
+                    </div>
+
+                    <a id="" href="#themeSelection" data-transition="fade" class="ui-btn ui-btn-icon-left ui-play-btn">Jouer</a>
+
+                </div>
+
             </main>
         </div>
 

@@ -45,6 +45,9 @@ function start(sockets) {
 		    		case 'jpeg':
 		    			contentType = 'image/jpeg';
 		    			break;
+		    		case 'svg':
+		    			contentType = 'image/svg+xml'; 
+		    			break;
 		    		default :
  						contentType = 'text/html';
 		    			break;
