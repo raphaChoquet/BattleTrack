@@ -17,11 +17,12 @@ var app = {
 
     bindEvent: function () {
         var self = this;
-        $('#connect a').click(function () {
+        $('#connect a').bind('tap', function () {
             self.connect();
         });
 
-        $('#btnPlay').click(function () {
+        $('#btnPlay').bind('tap', function () {
+            $('#btnPlay').unbind('tap');
             self.play();
         });
     },
@@ -31,6 +32,7 @@ var app = {
             username: prompt('Username :')
         };
         $('#user').html('Bienvenue ' + this.me.username);
+        $( ":mobile-pagecontainer" ).pagecontainer("change", '#lobby');
     },
 
     retrievePlaylist: function (resolve, reject, id) {
@@ -54,7 +56,9 @@ var app = {
             self.currentGame = null;
             self.play();
         }
-
+        $('#btnPlay').hide();
+        $('#lobby .ui-currentGames-btn').show();
+        
         this.socket = io('https://battletrack-nodejs-raphachoquet.c9.io');
         this.socket.emit('joinRoom', this.me);
 
@@ -174,7 +178,7 @@ var game = {
     choiceGenre: function () {
         var self = this;
         $('#choiceGenre').fadeIn();
-        var choiceGenre = new Promise(function (resolve, reject) {
+        var choiceGenre = Q.Promise(function (resolve, reject) {
             genreManager.init(resolve, reject)
         });
         choiceGenre.then(function (genre) {
@@ -184,7 +188,7 @@ var game = {
 
     initSet: function (genre) {
         var self = this;
-        var retrievedTracks = new Promise(function (resolve, reject) {
+        var retrievedTracks = Q.Promise(function (resolve, reject) {
             app.retrievePlaylist(resolve, reject, genre.playlist_id);
         });
 
@@ -277,7 +281,7 @@ var game = {
 
     showQuestionsPage: function (set, page) {
         var self = this;
-        var waitResponse = new Promise(function (resolve, reject) {
+        var waitResponse = Q.Promise(function (resolve, reject) {
             questionManager.init(resolve, set.questions[page]);
         });
 
@@ -534,3 +538,4 @@ Array.prototype.shuffle = function () {
     }
     return array;
 }
+

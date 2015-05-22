@@ -230,7 +230,7 @@ a.ui-btn.ui-btn-proposition.losing-btn.picked-loser-btn {
 }
 
 .endendGameSingle {
-    background-color: lightgrey;
+  background-color: lightgrey;
   border-radius: 3px;
   min-height: 56px;
   font-size: 0;
