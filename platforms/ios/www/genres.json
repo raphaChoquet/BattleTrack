@@ -1,0 +1,17 @@
+[
+	{
+		"id": 1,
+		"name": "Pop Rock",
+		"playlist_id": 908622995
+	},
+	{	
+		"id": 2,
+		"name": "Electro",
+		"playlist_id": 781155095
+	},
+	{
+		"id": 3,
+		"name": "Jazz",
+		"playlist_id": 1082641841
+	}
+]

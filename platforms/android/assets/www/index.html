@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="format-detection" content="telephone=no">
+        <meta charset="UTF-8">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link href='http://fonts.googleapis.com/css?family=Signika' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>Hello World</title>
+    </head>
+    <body>
+
+        <div data-role="page" id="load">
+            <main role="main" class="ui-content">
+                <div class="logosContainer">
+                    <img src="img/logo.svg" class="iconicLogo">
+                    <img src="img/logoName.svg">
+                </div>
+                <div>
+                    <h2>Connexion <span class="info">en cours</span></h2>
+                    <div class="loader" title="7">
+                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                        <rect x="0" y="10" width="4" height="10" fill="#d54F58" opacity="0.2">
+                          <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+                        </rect>
+                        <rect x="8" y="10" width="4" height="10" fill="#d54F58"  opacity="0.2">
+                          <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="height" attributeType=
+                          "XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+                        </rect>
+                        <rect x="16" y="10" width="4" height="10" fill="#d54F58"  opacity="0.2">
+                          <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+                        </rect>
+                      </svg>
+                    </div>
+                    <p class="warning" style="display:none;">Veuillez-vous connecter pour jouer</p>
+                </div>
+            </main>
+        </div>
+
+
+
+        <div data-role="page" id="connect">
+            <main role="main" class="ui-content">
+                <div class="logosContainer">
+                    <img src="img/logo.svg" class="iconicLogo">
+                    <img src="img/logoName.svg">
+                </div>
+                <a class="ui-btn fb-connect">CONNECTION FACEBOOK</a>
+                <a class="ui-btn classic-connect">SE CONNECTER</a>
+                <a class="ui-btn account-create">CRÉER UN COMPTE</a>
+            </main>
+        </div>
+
+        <div data-role="page" id="lobby">
+
+            <div data-role="panel" id="panelMenu" data-position="right" data-display="psuh">
+                MENU
+            </div>
+            <header data-role="header" data-position="fixed">
+<!--            <a href="#panelMenu" data-transition="slide" class="ui-btn ui-icon-gear ui-btn-right ui-btn-icon-notext ui-corner-all">No text</a>
+                <a href="#connect" data-direction="reverse" data-transition="slide" class="ui-btn ui-icon-power ui-btn-left ui-btn-icon-notext ui-corner-all">No text</a> -->
+                <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
+            </header><!-- /header -->
+
+            <main role="main" class="ui-content">
+             <div class="logosContainer">
+                <img src="img/logo.svg" class="iconicLogo">
+                <img src="img/logoName.svg">
+            </div>
+                <h2 id="user"></h2>
+                <button id="btnPlay" type="button" class="ui-btn ui-play-btn">Nouvelle Partie</button>
+                <a href="#currentGame" data-transition="slide" class="ui-btn ui-currentGames-btn" style="display:none;">Partie en cours</a>
+
+                <div class="endedGames">
+                    <h3>Parties terminées</h3>
+                    <div class="endendGameSingle">
+                        <div class="endedGameDetails">
+                            <span class="selfPlayer">Vous</span>
+                            <span class="endedGameScore">
+                                <span class="selfScore">2</span>
+                                    - 
+                                <span class="opponentScore">1</span>
+                            </span>
+                            <span class="opponent">Scordrix</span>
+                        </div>
+
+                        <div class="endedGameResult">
+                            Gagné !
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+
+        <div data-role="page" id="themeSelection">
+        <div data-role="panel" id="panelMenu" data-position="right" data-display="psuh">
+                MENU
+            </div>
+            <header data-role="header" data-position="fixed">
+                <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
+            </header><!-- /header -->
+
+            <main role="main" class="ui-content" id="choiceGenre" style="display:none;">
+                <h2>Choisis ton thème !</h2>
+                <div id="list-genre">
+                </div>
+            </main>
+        </div>
+
+        <div data-role="page" id="gameWait">
+            <header data-role="header" data-position="fixed">
+                <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
+            </header><!-- /header -->
+
+            <main role="main" class="ui-content" id="wait" style="display:none;">
+                <img src="img/logo.svg" class="playImage">
+                <h2>Joue contre <span class="opponentPlayer"></span></h2>
+                <p class="waiting">En attente du choix du théme par l'adversaire</p>
+                <p class="theme"></p>
+                <a href="#gameStart" data-transition="fade" class="ui-btn ui-icon-lock ui-btn-icon-left" style="display:none;">Commencer</a>
+            </main>
+        </div>
+
+        <div data-role="page" id="gameStart">
+            <header data-role="header" data-position="fixed">
+                <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
+            </header><!-- /header -->
+
+            <main role="main" class="ui-content">
+                <h2 id="title-genre">En chargement</h2>
+                <div class="progressBarContainer">
+                    <div class="progressBarProgression" style="width:0%;"></div>
+                </div>
+                <div id="propositions">
+                </div>   
+            </main>
+            <div id="overlay"></div>
+        </div>
+
+        <div data-role="page" id="currentGame">
+            <header data-role="header" data-position="fixed">
+               
+                <h1><img src="img/logoName.svg" alt="Battle Track"></h1>
+            </header><!-- /header -->
+
+            <main role="main" class="ui-content">
+               <div class="scoreBoard">
+                   <span class="selfPlayer third-large-column">Vous</span>
+                   <div class="playerScores third-small-column">
+                        <span class="meScore">0</span>
+                         - 
+                        <span class="opposantScore">0</span>
+                    </div>
+                    <span class="opponentPlayer third-large-column">Adversaire</span>
+               </div>
+                
+                <div id="scoreDetails">
+                    <div id="set-0" class="scoreSingleDetail">
+                        <span class="third-large-column result-me">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                        </span>
+                        <span class="third-small-column">
+                            <span class="setCounter">SET 1</span>
+                            <span class="setCategory">---</span>
+                        </span>
+                        <span class="third-large-column result-opposant">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                        </span>
+                    </div>
+
+                    <div class="scoreSingleDetail">
+                        <span class="third-large-column">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                        </span>
+                        <span class="third-small-column">
+                            <span class="setCounter">SET 2</span>
+                            <span class="setCategory">---</span>
+                        </span>
+                        <span class="third-large-column">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                        </span>
+                    </div>
+
+                     <div class="scoreSingleDetail">
+                        <span class="third-large-column">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                        </span>
+                        <span class="third-small-column">
+                            <span class="setCounter">SET 3</span>
+                            <span class="setCategory">---</span>
+                        </span>
+                        <span class="third-large-column">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                        </span>
+                    </div>
+
+                     <div class="scoreSingleDetail">
+                        <span class="third-large-column">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                        </span>
+                        <span class="third-small-column">
+                            <span class="setCounter">SET 4</span>
+                            <span class="setCategory">---</span>
+                        </span>
+                        <span class="third-large-column">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                            <img src="img/iconPlaying.png" class="disabled">
+                        </span>
+                    </div>
+                    <a href="#lobby" data-transition="slide" data-direction="reverse" class="ui-btn ui-currentGames-btn">Retour</a>
+                </div>
+            </main>
+        </div>
+
+        <script type="text/javascript" src="js/socket.io.js"></script>
+        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript" src="js/q.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>

@@ -1,0 +1,52 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "framework": {
+                "parents": {
+                    "SystemConfiguration.framework": [
+                        {
+                            "xml": true,
+                            "count": 1
+                        }
+                    ],
+                    "AudioToolbox.framework": [
+                        {
+                            "xml": true,
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"ios-package\" value=\"CDVConnection\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.isea.blind"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.isea.blind"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "com.isea.blind"
+        }
+    },
+    "dependent_plugins": {}
+}
