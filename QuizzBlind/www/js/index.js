@@ -4,15 +4,39 @@ var app = {
     currentGame: null,
     genres: null,
     socket: null,
+    connected : false,
 
     init: function () {
         var self = this;
+        document.addEventListener('deviceready', function () {
+            self.onDeviceReady();
+        }, false);
 
         $.getJSON('genres.json', function (genres) {
             self.genres = genres;
         });
+    },
 
-        this.bindEvent();
+    onDeviceReady: function () {
+        var self = this;
+
+        var networkState = navigator.connection.type;
+
+        if (networkState === Connection.NONE) {
+            self.showImpossibleConnection();
+        } else {
+            self.connected = true;
+            $( ":mobile-pagecontainer" ).pagecontainer("change", '#connect');
+        } 
+
+        self.bindEvent();
+    },
+
+    showImpossibleConnection: function () { 
+        self.connected = false;
+        $('#load .info').html("impossible");
+        $('#load .loader').fadeOut();
+        $('#load .warning').fadeIn();
     },
 
     bindEvent: function () {
@@ -24,6 +48,15 @@ var app = {
         $('#btnPlay').bind('tap', function () {
             $('#btnPlay').unbind('tap');
             self.play();
+        });
+
+        document.addEventListener("offline", function () {
+            $( ":mobile-pagecontainer" ).pagecontainer("change", '#load');
+            self.showImpossibleConnection();
+        }, false);
+
+        document.addEventListener('online', function () {
+            $( ":mobile-pagecontainer" ).pagecontainer("change", '#connect');
         });
     },
 
@@ -58,7 +91,7 @@ var app = {
         }
         $('#btnPlay').hide();
         $('#lobby .ui-currentGames-btn').show();
-        
+
         this.socket = io('https://battletrack-nodejs-raphachoquet.c9.io');
         this.socket.emit('joinRoom', this.me);
 

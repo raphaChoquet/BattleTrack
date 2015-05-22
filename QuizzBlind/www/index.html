@@ -12,10 +12,42 @@
     </head>
     <body>
 
+        <div data-role="page" id="load">
+            <main role="main" class="ui-content">
+                <div class="logosContainer">
+                    <img src="img/logo.svg" class="iconicLogo">
+                    <img src="img/logoName.svg">
+                </div>
+                <div>
+                    <h2>Connexion <span class="info">en cours</span></h2>
+                    <div class="loader" title="7">
+                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                        <rect x="0" y="10" width="4" height="10" fill="#d54F58" opacity="0.2">
+                          <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+                        </rect>
+                        <rect x="8" y="10" width="4" height="10" fill="#d54F58"  opacity="0.2">
+                          <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+                        </rect>
+                        <rect x="16" y="10" width="4" height="10" fill="#d54F58"  opacity="0.2">
+                          <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+                          <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+                        </rect>
+                      </svg>
+                    </div>
+                    <p class="warning" style="display:none;">Veuillez-vous connecter pour jouer</p>
+                </div>
+            </main>
+        </div>
+
+
+
         <div data-role="page" id="connect">
-           
-
-
             <main role="main" class="ui-content">
                 <div class="logosContainer">
                     <img src="img/logo.svg" class="iconicLogo">
@@ -26,7 +58,6 @@
                 <a class="ui-btn account-create">CRÉER UN COMPTE</a>
             </main>
         </div>
-
 
         <div data-role="page" id="lobby">
 
@@ -207,8 +238,8 @@
             </main>
         </div>
 
-        <script type="text/javascript" src="https://battletrack-nodejs-raphachoquet.c9.io/socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/socket.io.js"></script>
+        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
         <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
         <script type="text/javascript" src="js/q.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
