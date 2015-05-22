@@ -42,6 +42,9 @@
 		769770EBED324AE7B0DAADCC /* CDVConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7821EAE2ED45418DAB4DE4E5 /* CDVConnection.m */; };
 		C11925B9ABCF40638FCB38F2 /* CDVReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B2F48202087456DAAD9D77A /* CDVReachability.m */; };
 		5E176E2CFA134402913BFFEF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAA48485EA7640D391F97D76 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		9337D28DB0BC4E4C8235A459 /* CDVNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A297126A5CF488282416373 /* CDVNotification.m */; };
+		76F4CF36503A41019B74B0EB /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 48E9566741C649B68C31EA4F /* CDVNotification.bundle */; };
+		20405F1DC8F34BFFB571D6B2 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6453B291E73B4A5ABC9B6FAC /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +115,10 @@
 		57C20BD467E14685A7679782 /* CDVConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVConnection.h"; path = "cordova-plugin-network-information/CDVConnection.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		D233228DB13947AAA65D363A /* CDVReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVReachability.h"; path = "cordova-plugin-network-information/CDVReachability.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		DAA48485EA7640D391F97D76 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "SystemConfiguration.framework"; path = "System/Library/Frameworks/SystemConfiguration.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
+		7A297126A5CF488282416373 /* CDVNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVNotification.m"; path = "cordova-plugin-dialogs/CDVNotification.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		D396B8B3F86D4049BF1CDE30 /* CDVNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVNotification.h"; path = "cordova-plugin-dialogs/CDVNotification.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		48E9566741C649B68C31EA4F /* CDVNotification.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "CDVNotification.bundle"; path = "CDVNotification.bundle"; sourceTree = "<group>"; };
+		6453B291E73B4A5ABC9B6FAC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "AudioToolbox.framework"; path = "System/Library/Frameworks/AudioToolbox.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +131,7 @@
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				305D5FD1115AB8F900A74A75 /* MobileCoreServices.framework in Frameworks */,
 				5E176E2CFA134402913BFFEF /* SystemConfiguration.framework in Frameworks */,
+				20405F1DC8F34BFFB571D6B2 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +193,7 @@
 				308D052D1370CCF300D202BF /* icons */,
 				308D05311370CCF300D202BF /* splash */,
 				8D1107310486CEB800E47090 /* Blind Quizz-Info.plist */,
+				48E9566741C649B68C31EA4F /* CDVNotification.bundle */,
 			);
 			name = Resources;
 			path = "Blind Quizz/Resources";
@@ -197,6 +206,7 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */,
 				DAA48485EA7640D391F97D76 /* SystemConfiguration.framework */,
+				6453B291E73B4A5ABC9B6FAC /* AudioToolbox.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -216,6 +226,8 @@
 				6B2F48202087456DAAD9D77A /* CDVReachability.m */,
 				57C20BD467E14685A7679782 /* CDVConnection.h */,
 				D233228DB13947AAA65D363A /* CDVReachability.h */,
+				7A297126A5CF488282416373 /* CDVNotification.m */,
+				D396B8B3F86D4049BF1CDE30 /* CDVNotification.h */,
 			);
 			name = Plugins;
 			path = "Blind Quizz/Plugins";
@@ -369,6 +381,7 @@
 				7E7966E11810823500FA85AD /* icon-50@2x.png in Resources */,
 				7E7966E51810823500FA85AD /* icon-76@2x.png in Resources */,
 				30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */,
+				76F4CF36503A41019B74B0EB /* CDVNotification.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +415,7 @@
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				769770EBED324AE7B0DAADCC /* CDVConnection.m in Sources */,
 				C11925B9ABCF40638FCB38F2 /* CDVReachability.m in Sources */,
+				9337D28DB0BC4E4C8235A459 /* CDVNotification.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

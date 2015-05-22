@@ -23,9 +23,9 @@ body {
 
 .ui-page-theme-a #list-genre .ui-btn {
     background-color:#20d6C7;
-      font-size: 35px;
-  padding: 15px;
-    margin: 25px 0;
+    font-size: 35px;
+    padding: 15px;
+    margin: 15% 0;
 }
 
 /*_____________THEME GENERAL
@@ -63,11 +63,11 @@ html .ui-page-theme-a .ui-btn.account-create {
 .logosContainer {
   max-width:270px;
   width:100%;
-  margin:90px auto;
+  margin:20% auto;
 }
 
 #lobby .logosContainer {
-  margin:40px auto;
+    margin: 0 auto 10%;
 }
 .iconicLogo {
   width:50%;
@@ -124,6 +124,7 @@ main.ui-content {
     width:100%;
     height:10px;
     background:#113F59;
+    margin: 10% 0;
 }
 
 .progressBarProgression {

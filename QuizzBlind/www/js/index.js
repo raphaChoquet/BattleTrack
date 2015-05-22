@@ -61,11 +61,28 @@ var app = {
     },
 
     connect: function () {
-        this.me = {
-            username: prompt('Username :')
-        };
-        $('#user').html('Bienvenue ' + this.me.username);
-        $( ":mobile-pagecontainer" ).pagecontainer("change", '#lobby');
+
+        var self = this;
+        function onPrompt(result) {
+            if (result.buttonIndex === 1) {
+                self.me = {
+                    username: result.input1
+                };
+                $('#user').html('Bienvenue ' + self.me.username);
+                $( ":mobile-pagecontainer" ).pagecontainer("change", '#lobby');
+            }
+        }
+
+
+        navigator.notification.prompt(
+            "Choissisez votre surnom",  // message
+            onPrompt,                  // callback to invoke
+            'Préparez-vous à jouer',            // title
+            ['Ok','Exit'],             // buttonLabels
+            'BattleTracker'                 // defaultText
+        );
+
+
     },
 
     retrievePlaylist: function (resolve, reject, id) {
@@ -89,9 +106,6 @@ var app = {
             self.currentGame = null;
             self.play();
         }
-        $('#btnPlay').hide();
-        $('#lobby .ui-currentGames-btn').show();
-
         this.socket = io('https://battletrack-nodejs-raphachoquet.c9.io');
         this.socket.emit('joinRoom', this.me);
 
@@ -104,10 +118,14 @@ var app = {
                 self.currentGame = game;
                 self.currentGame.start('create', gameRoom);
                 $( ":mobile-pagecontainer" ).pagecontainer("change", '#themeSelection');
+                $('#btnPlay').hide();
+                $('#lobby .ui-currentGames-btn').show();
             } else {
                 self.currentGame = game;
                 self.currentGame.start('wait', gameRoom);
                 $( ":mobile-pagecontainer" ).pagecontainer("change", '#gameWait');
+                $('#btnPlay').hide();
+                $('#lobby .ui-currentGames-btn').show();
             }
         });
 
